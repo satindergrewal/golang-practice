@@ -1,0 +1,21 @@
+
+curl -k -u someuser:somepassword http://0.0.0.0:7000
+
+curl -k -u someuser:somepassword http://0.0.0.0:7000 -v
+
+
+
+
+rpcuser
+
+user60de7828fd8985d3
+
+rpcpassword
+
+ce3f74430f82aa34b58aeba4b37a3373
+
+-k -u user60de7828fd8985d3:ce3f74430f82aa34b58aeba4b37a3373
+
+
+curl -k -u user60de7828fd8985d3:ce3f74430f82aa34b58aeba4b37a3373 --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getinfo", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:7771/
+

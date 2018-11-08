@@ -1,0 +1,32 @@
+
+
+part 1:
+1. read json from http post
+2. save this json to key/value database
+
+part 2:
+1. read json from http post
+2. query key/value db for a key
+3. read json if query gets back with data
+4. compare this json with the data got from step 1
+5. display message if it matches or unmatches.
+
+
+
+
+
+
+// initial process on startup
+
+
+- query tokenlist
+	- get json array of hashes as list
+	- check existing key 'tokenlist' if it already exists and if the value in it matches the hashes list.
+		- if the hashes list doesn't match, get the difference and find only the new values list.
+		- append only these new hashes to the existing 'tokenlist' key.
+	- store it in boltdb file under key 'tokenlist'
+- loop through tokenlist array
+	- query tokeninfo for each tokenlist hash
+	- store it in boltdb file under key '<token hash here>'
+
+
