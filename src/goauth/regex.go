@@ -146,7 +146,19 @@ func main(){
     kmd_rpcuser := strings.TrimLeft(strings.TrimLeft(rpcuser_line,`rpcuser`),`=`)
     kmd_rpcpass := strings.TrimLeft(strings.TrimLeft(rpcpass_line,`rpcpassword`),`=`)
 
-    fmt.Printf("RPC User: %s\nRPC Password: %s\n", kmd_rpcuser, kmd_rpcpass)
+
+	fmt.Printf("RPC User: %s\nRPC Password: %s\n", kmd_rpcuser, kmd_rpcpass)
+
+	/* OUTPUT
+	/home/satinder
+	/home/satinder/.komodo/komodo.conf
+	"rpcuser=user60de7828fd8985d3"
+	"rpcpassword=ce3f74430f82aa34b58aeba4b37a3373"
+
+
+	RPC User: user60de7828fd8985d3
+	RPC Password: ce3f74430f82aa34b58aeba4b37a3373
+	*/
 
     //re := regexp.MustCompile("rpcuser=.?")
     //fmt.Printf("%q\n", re.FindString(bytestr))
