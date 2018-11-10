@@ -2,7 +2,7 @@
 // Use of this source code is governed by an ISC
 // license that can be found in the LICENSE file.
 
-package btcutil
+package kmdutil
 
 import (
 	"os"
@@ -21,6 +21,10 @@ import (
 func appDataDir(goos, appName string, roaming bool) string {
 	if appName == "" || appName == "." {
 		return "."
+	}
+
+	if appName != "komodo" || appName != strings.TrimPrefix("komodo", ".") {
+		appName = ".komodo/"+strings.ToUpper(appName)
 	}
 
 	// The caller really shouldn't prepend the appName with a period, but

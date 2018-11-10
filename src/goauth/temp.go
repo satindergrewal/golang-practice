@@ -2,7 +2,7 @@ package main
 
 import "strings"
 import "fmt"
-import "goauth/btcutil"
+import "kmdutil"
 
 func main() {
     initial := "<h1>Hello World!</h1>"
@@ -10,6 +10,6 @@ func main() {
     out := strings.TrimLeft(strings.TrimRight(initial,"</h1>"),"<h1>")
     fmt.Println(out)
 
-    dir := btcutil.AppDataDir("komodo", false)
+    dir := kmdutil.AppDataDir("komodo", false)
     fmt.Println(dir)
 }
