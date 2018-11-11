@@ -8,8 +8,7 @@ import(
     "log"
     "bytes"
     "encoding/json"
-    "os/user"
-    "regexp"
+    "github.com/satindergrewal/kmdgo/kmdutil"
 )
 
 //RPCUsername, RPCPassword string = "user60de7828fd8985d3", "ce3f74430f82aa34b58aeba4b37a3373"
@@ -20,43 +19,16 @@ func BytesToString(data []byte) string {
 
 func basicAuth() string {
 
-    usr, err := user.Current()
-    if err != nil {
-        log.Fatal( err )
-    }
-    fmt.Println( usr.HomeDir )
+    appName := "komodo"
 
-    kmdconf := usr.HomeDir+`/.komodo/komodo.conf`
-    fmt.Println(kmdconf)
+    //appDir := kmdutil.AppDataDir(appName, false)
+    //fmt.Println(appDir)
 
-    confdata, err := ioutil.ReadFile(kmdconf)
-    if err != nil {
-        log.Fatal( err )
-    }
-    //fmt.Printf("%s\n",confdata)
+    rpcuser, rpcpass, rpcport := kmdutil.AppRPCInfo(appName)
 
-    var rpcu = regexp.MustCompile("(?m)^rpcuser=.+$")
-    fmt.Println(rpcu)
-
-    fmt.Println(rpcu.Match(confdata))
-
-    bytestr := BytesToString(confdata)
-    //fmt.Println("BytesToString: "+bytestr)
-
-    rpcuser_line := rpcu.FindString(bytestr)
-    fmt.Printf("%q\n", rpcuser_line)
-
-    re := regexp.MustCompile("rpcuser=.?")
-    fmt.Printf("%q\n", re.FindString(bytestr))
-
-    fmt.Println(re.FindStringSubmatch(rpcuser_line))
-
-    var username string = "user60de7828fd8985d3"
-    var passwd string = "ce3f74430f82aa34b58aeba4b37a3373"
-    
     client := &http.Client{}
 
-    url := "http://127.0.0.1:7771"
+    url := `http://127.0.0.1:`+rpcport
     fmt.Println("URL:>", url)
 
     query_byte := []byte(`{"jsonrpc": "1.0", "id":"curltest", "method": "getinfo", "params": [] }`)
@@ -66,7 +38,7 @@ func basicAuth() string {
     req.Header.Set("Content-Type", "application/json")
 
 //    req, err := http.NewRequest("POST", , nil)
-    req.SetBasicAuth(username, passwd)
+    req.SetBasicAuth(rpcuser, rpcpass)
 
     resp, err := client.Do(req)
     if err != nil{
