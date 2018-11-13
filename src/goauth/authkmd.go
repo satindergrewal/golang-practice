@@ -8,6 +8,7 @@ import(
     "log"
     "bytes"
     "encoding/json"
+    //"github.com/json-iterator/go"
     "github.com/satindergrewal/kmdgo/kmdutil"
 )
 
@@ -17,9 +18,50 @@ func BytesToString(data []byte) string {
     return string(data[:])
 }
 
-func basicAuth() string {
+type GetInfo struct {
+    Result struct {
+        Version             int     `json:"version"`
+        Protocolversion     int     `json:"protocolversion"`
+        KMDversion          string  `json:"KMDversion"`
+        Notarized           int     `json:"notarized"`
+        PrevMoMheight       int     `json:"prevMoMheight"`
+        Notarizedhash       string  `json:"notarizedhash"`
+        Notarizedtxid       string  `json:"notarizedtxid"`
+        NotarizedtxidHeight string  `json:"notarizedtxid_height"`
+        KMDnotarizedHeight  int     `json:"KMDnotarized_height"`
+        NotarizedConfirms   int     `json:"notarized_confirms"`
+        Walletversion       int     `json:"walletversion"`
+        Balance             float64 `json:"balance"`
+        Blocks              int     `json:"blocks"`
+        Longestchain        int     `json:"longestchain"`
+        Timeoffset          int     `json:"timeoffset"`
+        Tiptime             int     `json:"tiptime"`
+        Connections         int     `json:"connections"`
+        Proxy               string  `json:"proxy"`
+        Difficulty          float64 `json:"difficulty"`
+        Testnet             bool    `json:"testnet"`
+        Keypoololdest       int     `json:"keypoololdest"`
+        Keypoolsize         int     `json:"keypoolsize"`
+        Paytxfee            float64 `json:"paytxfee"`
+        Relayfee            float64 `json:"relayfee"`
+        Errors              string  `json:"errors"`
+        CCid                int     `json:"CCid"`
+        Name                string  `json:"name"`
+        P2Pport             int     `json:"p2pport"`
+        Rpcport             int     `json:"rpcport"`
+        Magic               int     `json:"magic"`
+        Premine             int     `json:"premine"`
+        Reward              int64   `json:"reward"`
+        Halving             int     `json:"halving"`
+        Commission          int     `json:"commission"`
+    } `json:"result"`
+    Error interface{} `json:"error"`
+    ID    string      `json:"id"`
+}
 
-    appName := "komodo"
+
+func basicAuth() string {
+    appName := "zex"
 
     //appDir := kmdutil.AppDataDir(appName, false)
     //fmt.Println(appDir)
@@ -45,32 +87,37 @@ func basicAuth() string {
         log.Fatal(err)
     }
     bodyText, err := ioutil.ReadAll(resp.Body)
-    fmt.Printf("%T\n\n", bodyText)
+    //fmt.Printf("%T\n\n", bodyText)
 
     var query_result map[string]interface{}
 
     if err := json.Unmarshal(bodyText, &query_result); err != nil {
         panic(err)
     }
-    fmt.Println(query_result)
+    //fmt.Println(query_result)
     fmt.Printf("\n\n")
 
-    fmt.Println(query_result["result"].(map[string]interface{})["connections"])
+    //fmt.Println(query_result["result"].(map[string]interface{})["connections"])
 
-    parsed_result := query_result["result"]
+/*    parsed_result := query_result["result"]
     fmt.Println("result: ", parsed_result)
     fmt.Printf("\n\n")
+*/
 
     s := string(bodyText)
     return s
 }
 
 func main(){
-    
-    //fmt.Printf("RPC Username: %s\nRPC Password: %s\n\n", RPCUsername, RPCPassword)
-    
 
     fmt.Println("requesting...\n")
-    S := basicAuth()
-    fmt.Println(S)
+    getinfoJson := basicAuth()
+    fmt.Println(getinfoJson)
+
+    fmt.Printf("%T\n", getinfoJson)
+    
+    var getinfo GetInfo   
+    json.Unmarshal([]byte(getinfoJson), &getinfo)
+    fmt.Println(getinfo.Result.Version)
+    //fmt.Printf("Version: %d", getinfo[0].Version)
 }
