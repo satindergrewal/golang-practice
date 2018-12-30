@@ -61,7 +61,7 @@ type GetInfo struct {
 
 
 func basicAuth() string {
-    appName := "zex"
+    appName := "komodo"
 
     //appDir := kmdutil.AppDataDir(appName, false)
     //fmt.Println(appDir)
