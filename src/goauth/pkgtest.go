@@ -9,7 +9,7 @@ import (
 
 func main() {
 	//getinfoJson := `{"result":{"version":1001550,"balance":10.16429765,"blocks":459,"name":"KMD"},"error":null,"id":"curltest"}`
-	getinfoJson := mypkg.GetinfoJson()
+	getinfoJson := mypkg.GetinfoJsonValue()
 	fmt.Println(getinfoJson)
 
     var getinfo mypkg.GetInfo
