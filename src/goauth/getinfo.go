@@ -50,7 +50,7 @@ type GetInfo struct {
 
 func main(){
 
-    fmt.Println("requesting...\n")
+    //fmt.Println("requesting...\n")
     getinfoJson := `{"result":{"version":1001550,"protocolversion":170003,"KMDversion":"0.2.0","notarized":0,"prevMoMheight":0,"notarizedhash":"0000000000000000000000000000000000000000000000000000000000000000","notarizedtxid":"0000000000000000000000000000000000000000000000000000000000000000","notarizedtxid_height":"mempool","KMDnotarized_height":0,"notarized_confirms":0,"walletversion":60000,"balance":10.16429765,"blocks":459,"longestchain":0,"timeoffset":0,"tiptime":1536624090,"connections":0,"proxy":"","difficulty":1.000026345948652,"testnet":false,"keypoololdest":1536262464,"keypoolsize":101,"relayfee":0.000001,"paytxfee":0,"errors":"","name":"SIDD","p2pport":9800,"rpcport":9801,"magic":-759875707,"premine":10},"error":null,"id":"curltest"}`
     //fmt.Println(getinfoJson)
 

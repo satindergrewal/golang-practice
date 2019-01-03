@@ -5,7 +5,7 @@ import(
     //"encoding/json"
 )
 
-
+type MyString string
 
 type GetInfo struct {
     Result struct {
@@ -17,6 +17,17 @@ type GetInfo struct {
     Error interface{} `json:"error"`
     ID    string      `json:"id"`
 }
+
+func GetinfoJson() string {
+    getinfoJson := `{"result":{"version":1001550,"balance":10.16429765,"blocks":459,"name":"KMD"},"error":null,"id":"curltest"}`
+    return getinfoJson
+}
+
+/*func (info MyString) MyMethod() GetInfo {
+    var getinfo GetInfo
+    json.Unmarshal([]byte(info), &getinfo)
+    return getinfo
+}*/
 
 
 /*GetinfoJson := `{"result":{"version":1001550,"balance":10.16429765,"blocks":459,"name":"KMD"},"error":null,"id":"curltest"}`
