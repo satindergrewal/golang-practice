@@ -1,7 +1,6 @@
-//authclient.go
 package main
 
-import(
+import (
     "fmt"
     "net/http"
     "io/ioutil"
@@ -9,14 +8,7 @@ import(
     "bytes"
     "encoding/json"
     "github.com/satindergrewal/kmdgo/kmdutil"
-    
 )
-
-//RPCUsername, RPCPassword string = "user60de7828fd8985d3", "ce3f74430f82aa34b58aeba4b37a3373"
-
-func BytesToString(data []byte) string {
-    return string(data[:])
-}
 
 type GetInfo struct {
     Result struct {
@@ -59,29 +51,22 @@ type GetInfo struct {
     ID    string      `json:"id"`
 }
 
-
-func basicAuth() string {
+func GetinfoJsonValue() string {
     appName := "komodo"
-
-    //appDir := kmdutil.AppDataDir(appName, false)
-    //fmt.Println(appDir)
-
     rpcuser, rpcpass, rpcport := kmdutil.AppRPCInfo(appName)
 
     client := &http.Client{}
-
     url := `http://127.0.0.1:`+rpcport
-    fmt.Println("URL:>", url)
+    //fmt.Println("URL:>", url)
 
     query_byte := []byte(`{"jsonrpc": "1.0", "id":"curltest", "method": "getinfo", "params": [] }`)
-    fmt.Printf("Query: %s\n\n", query_byte)
+    //fmt.Printf("Query: %s\n\n", query_byte)
 
     req, err := http.NewRequest("POST", url, bytes.NewBuffer(query_byte))
     req.Header.Set("Content-Type", "application/json")
 
-//    req, err := http.NewRequest("POST", , nil)
+    //req, err := http.NewRequest("POST", , nil)
     req.SetBasicAuth(rpcuser, rpcpass)
-
     resp, err := client.Do(req)
     if err != nil{
         log.Fatal(err)
@@ -90,7 +75,6 @@ func basicAuth() string {
     //fmt.Printf("%T\n\n", bodyText)
 
     var query_result map[string]interface{}
-
     if err := json.Unmarshal(bodyText, &query_result); err != nil {
         panic(err)
     }
@@ -99,7 +83,7 @@ func basicAuth() string {
 
     //fmt.Println(query_result["result"].(map[string]interface{})["connections"])
 
-/*    parsed_result := query_result["result"]
+/*  parsed_result := query_result["result"]
     fmt.Println("result: ", parsed_result)
     fmt.Printf("\n\n")
 */
@@ -108,16 +92,32 @@ func basicAuth() string {
     return s
 }
 
-func main(){
+/*func GetinfoJsonValue() string {
+    getinfoJson := `{"result":{"version":1001550,"protocolversion":170003,"KMDversion":"0.2.0","notarized":0,"prevMoMheight":0,"notarizedhash":"0000000000000000000000000000000000000000000000000000000000000000","notarizedtxid":"0000000000000000000000000000000000000000000000000000000000000000","notarizedtxid_height":"mempool","KMDnotarized_height":0,"notarized_confirms":0,"walletversion":60000,"balance":10.16429765,"blocks":459,"longestchain":0,"timeoffset":0,"tiptime":1536624090,"connections":0,"proxy":"","difficulty":1.000026345948652,"testnet":false,"keypoololdest":1536262464,"keypoolsize":101,"relayfee":0.000001,"paytxfee":0,"errors":"","name":"SIDD","p2pport":9800,"rpcport":9801,"magic":-759875707,"premine":10},"error":null,"id":"curltest"}`
+    return getinfoJson
+}*/
 
-    fmt.Println("requesting...\n")
-    getinfoJson := basicAuth()
-    fmt.Println(getinfoJson)
+func (i GetInfo) DisplayGetinfo() GetInfo {
+    //fmt.Println(i.Result.Version)
+    return i
+}
 
-    fmt.Printf("%T\n", getinfoJson)
-    
-    var getinfo GetInfo   
+func ResultGetInfo() GetInfo {
+    getinfoJson := GetinfoJsonValue()
+    var getinfo GetInfo
     json.Unmarshal([]byte(getinfoJson), &getinfo)
-    fmt.Println(getinfo.Result.Version)
-    //fmt.Printf("Version: %d", getinfo[0].Version)
+    return getinfo
+}
+
+func main() {  
+    var rval GetInfo
+    rval = ResultGetInfo()
+    fmt.Println(rval)
+    fmt.Println(rval.Result)
+    fmt.Println(rval.Result.Version)
+    fmt.Println(rval.Result.Balance)
+    fmt.Println(rval.Result.Blocks)
+    fmt.Println(rval.Result.Name)
+    fmt.Println(rval.Error)
+    fmt.Println(rval.ID)
 }
