@@ -10,9 +10,6 @@ import (
     "github.com/satindergrewal/kmdgo/kmdutil"
 )
 
-//{"result":null,"error":{"code":-28,"message":"Loading block index..."},"id":"kmdgo"}
-//{"result":"0895451014bccc54040257849239bd1677142a3dfe5cd41a5b8f3c9b03a1ad21","error":null,"id":"kmdgo"}
-
 type appType string
 
 type GetBestBlockhash struct {
@@ -49,16 +46,7 @@ func GetBestBlockhashJsonValue(appName appType) string {
     return s
 }
 
-func (appName appType) DisplayGetBestBlockhash() GetBestBlockhash {
-    fmt.Println(appName)
-    fmt.Printf("%T\n", appName)
-    getbestblockhashJson := GetBestBlockhashJsonValue(appName)
-    var getbestblockhash GetBestBlockhash
-    json.Unmarshal([]byte(getbestblockhashJson), &getbestblockhash)
-    return getbestblockhash
-}
-
-func ResultGetBestBlockhash(appName appType) GetBestBlockhash {
+func (appName appType) GetBestBlockhash() GetBestBlockhash {
     getbestblockhashJson := GetBestBlockhashJsonValue(appName)
     var getbestblockhash GetBestBlockhash
     json.Unmarshal([]byte(getbestblockhashJson), &getbestblockhash)
@@ -66,14 +54,11 @@ func ResultGetBestBlockhash(appName appType) GetBestBlockhash {
 }
 
 func main() {
-    //appName := `komodo`
     var appName appType
     appName = `komodo`
-    fmt.Printf("%T\n", appName)
+    //fmt.Printf("%T\n", appName)
     var bh GetBestBlockhash
-    //bh.DisplayGetBestBlockhash()
-    //bh = ResultGetBestBlockhash(appName)
-    bh = appName.DisplayGetBestBlockhash()
+    bh = appName.GetBestBlockhash()
     fmt.Println(bh)
     fmt.Println(bh.Result)
     fmt.Println(bh.Error)
