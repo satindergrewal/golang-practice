@@ -23,6 +23,21 @@ type APIQuery struct {
     Params string `json:"params"`
 }
 
+type APIError struct {
+    Result interface{} `json:"result"`
+    Error  struct {
+        Code    int    `json:"code"`
+        Message string `json:"message"`
+    } `json:"error"`
+    ID string `json:"id"`
+}
+
+type APIAnswer struct {
+    Result interface{} `json:"result"`
+    Error  interface{} `json:"error"`
+    ID     string      `json:"id"`
+}
+
 
 func (appName appType) APICall(q APIQuery) string {
     rpcuser, rpcpass, rpcport := kmdutil.AppRPCInfo(string(appName))
@@ -59,6 +74,22 @@ func (appName appType) APICall(q APIQuery) string {
     if err := json.Unmarshal(bodyText, &query_result); err != nil {
         panic(err)
     }
+
+    var query_ans APIAnswer
+    var query_err APIError
+
+    json.Unmarshal([]byte(bodyText), &query_ans)
+    fmt.Println(query_ans)
+    
+    if query_ans.Result != nil {
+        fmt.Println("query got answer!")
+    } else {
+        fmt.Println("!!! Return Error !!!")
+        json.Unmarshal([]byte(bodyText), &query_err)
+        fmt.Println(query_err.Error.Code)
+        fmt.Println(query_err.Error.Message)
+    }
+
 
     s := string(bodyText)
     return s
@@ -101,6 +132,7 @@ func (appName appType) GetBestBlockhash() GetBestBlockhash {
 
     //getbestblockhashJson := GetBestBlockhashJsonValue(appName)
     getbestblockhashJson := appName.APICall(query)
+    fmt.Println(getbestblockhashJson)
     var getbestblockhash GetBestBlockhash
     json.Unmarshal([]byte(getbestblockhashJson), &getbestblockhash)
     return getbestblockhash
