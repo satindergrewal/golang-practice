@@ -3,16 +3,17 @@ package main
 import (
     "fmt"
     "log"
-    "goauth/mypkg3"
+    //"goauth/mypkg3"
+    "github.com/satindergrewal/kmdgo"
 )
 
 func main() {
-    var appName mypkg.AppType
+    var appName kmdgo.AppType
     appName = `komodo`
     var err error
     fmt.Printf("\n")
 
-    var bh mypkg.GetBestBlockhash
+    var bh kmdgo.GetBestBlockhash
     bh, err = appName.GetBestBlockhash()
     if err != nil {
         log.Println("err happened", err)
@@ -24,7 +25,7 @@ func main() {
     fmt.Println(bh.ID)
 
     /*
-    var info mypkg.GetInfo
+    var info kmdgo.GetInfo
 
     info, err = appName.GetInfo()
     if err != nil {
