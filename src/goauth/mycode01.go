@@ -15,8 +15,8 @@ import (
 type appType string
 
 type GetBestBlockhash struct {
-    Result interface{}      `json:"result"`
-    Error  Error `json:"error"`
+    Result interface{} `json:"result"`
+    Error  Error       `json:"error"`
     ID     string      `json:"id"`
 }
 
