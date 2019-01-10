@@ -5,6 +5,8 @@ import (
     "net/http"
     "io/ioutil"
     "log"
+    "errors"
+    //"os"
     "bytes"
     "encoding/json"
     "github.com/satindergrewal/kmdgo/kmdutil"
@@ -13,8 +15,8 @@ import (
 type appType string
 
 type GetBestBlockhash struct {
-    Result string      `json:"result"`
-    Error  interface{} `json:"error"`
+    Result interface{}      `json:"result"`
+    Error  Error `json:"error"`
     ID     string      `json:"id"`
 }
 
@@ -23,21 +25,10 @@ type APIQuery struct {
     Params string `json:"params"`
 }
 
-type APIError struct {
-    Result interface{} `json:"result"`
-    Error  struct {
-        Code    int    `json:"code"`
-        Message string `json:"message"`
-    } `json:"error"`
-    ID string `json:"id"`
+type Error struct {
+    Code    int    `json:"code"`
+    Message string `json:"message"`
 }
-
-type APIAnswer struct {
-    Result interface{} `json:"result"`
-    Error  interface{} `json:"error"`
-    ID     string      `json:"id"`
-}
-
 
 func (appName appType) APICall(q APIQuery) string {
     rpcuser, rpcpass, rpcport := kmdutil.AppRPCInfo(string(appName))
@@ -75,28 +66,12 @@ func (appName appType) APICall(q APIQuery) string {
         panic(err)
     }
 
-    var query_ans APIAnswer
-    var query_err APIError
-
-    json.Unmarshal([]byte(bodyText), &query_ans)
-    fmt.Println(query_ans)
-    
-    if query_ans.Result != nil {
-        fmt.Println("query got answer!")
-    } else {
-        fmt.Println("!!! Return Error !!!")
-        json.Unmarshal([]byte(bodyText), &query_err)
-        fmt.Println(query_err.Error.Code)
-        fmt.Println(query_err.Error.Message)
-    }
-
-
     s := string(bodyText)
     return s
 }
 
 
-func GetBestBlockhashJsonValue(appName appType) string {
+/*func GetBestBlockhashJsonValue(appName appType) string {
     rpcuser, rpcpass, rpcport := kmdutil.AppRPCInfo(string(appName))
 
     client := &http.Client{}
@@ -122,38 +97,50 @@ func GetBestBlockhashJsonValue(appName appType) string {
 
     s := string(bodyText)
     return s
-}
+}*/
 
-func (appName appType) GetBestBlockhash() GetBestBlockhash {
+func (appName appType) GetBestBlockhash() (GetBestBlockhash, error) {
     query := APIQuery {
         Method:     "getbestblockhash",
         Params:   "[]",
     }
 
+    var getbestblockhash GetBestBlockhash
+
     //getbestblockhashJson := GetBestBlockhashJsonValue(appName)
     getbestblockhashJson := appName.APICall(query)
     fmt.Println(getbestblockhashJson)
-    var getbestblockhash GetBestBlockhash
+    
+    
     json.Unmarshal([]byte(getbestblockhashJson), &getbestblockhash)
-    return getbestblockhash
+    
+    if getbestblockhash.Result != nil {
+        fmt.Println("query got answer!")
+    } else {
+        fmt.Println("!!! Return Error !!!")
+        answer_error, err := json.Marshal(getbestblockhash.Error)
+        if err != nil {
+            fmt.Println("error:", err)
+        }
+        return getbestblockhash, errors.New(string(answer_error))
+    }
+
+    json.Unmarshal([]byte(getbestblockhashJson), &getbestblockhash)
+    return getbestblockhash, nil
 }
 
 func main() {
     var appName appType
     appName = `komodo`
-    //fmt.Printf("%T\n", appName)
+    fmt.Printf("\n")
     var bh GetBestBlockhash
-    bh = appName.GetBestBlockhash()
-    fmt.Println(bh)
-    fmt.Println(bh.Result)
-    fmt.Println(bh.Error)
-    fmt.Println(bh.ID)
-
-    /*query := APIQuery {
-        Method:     "getbestblockhash",
-        Params:   "[]",
+    bh, err := appName.GetBestBlockhash()
+    if err != nil {
+        log.Println("err happened", err)
     }
-
-    bh := appName.APICall(query)
-    fmt.Println(bh)*/
+    fmt.Println("bh value", bh)
+    fmt.Println(bh.Result)
+    fmt.Println(bh.Error.Code)
+    fmt.Println(bh.Error.Message)
+    fmt.Println(bh.ID)
 }
