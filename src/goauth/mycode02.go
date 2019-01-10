@@ -173,7 +173,7 @@ func main() {
     var err error
     fmt.Printf("\n")
 
-    var bh GetBestBlockhash
+    /*var bh GetBestBlockhash
     bh, err = appName.GetBestBlockhash()
     if err != nil {
         log.Println("err happened", err)
@@ -182,9 +182,9 @@ func main() {
     fmt.Println(bh.Result)
     fmt.Println(bh.Error.Code)
     fmt.Println(bh.Error.Message)
-    fmt.Println(bh.ID)
+    fmt.Println(bh.ID)*/
 
-    /*var info GetInfo
+    var info GetInfo
 
     info, err = appName.GetInfo()
     if err != nil {
@@ -193,9 +193,14 @@ func main() {
     fmt.Println("getinfo value", info)
     fmt.Println(info.Result)
     fmt.Println(info.Error.Code)
-    fmt.Println(info.Error.Message)*/
+    fmt.Println(info.Error.Message)
 
     fmt.Printf("\n\n\n")
+
+    fmt.Println(info.Result.Version)
+    fmt.Println(info.Result.Balance)
+    fmt.Println(info.Result.Blocks)
+    fmt.Println(info.Result.Name)
 
     //fmt.Printf("%T\n", info)
 
