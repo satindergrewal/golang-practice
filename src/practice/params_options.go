@@ -48,9 +48,19 @@ func main() {
 
 	p4 := make(params, 4)
 	fmt.Println(p4)
+	
+	if p4[0] == nil {
+		p4[0] = "*"
+	}
+	if p4[1] == nil {
+		p4[1] = 0
+	}
+
+	if p4[2] == nil {
+		p4[2] = 10
+	}
 	if p4[3] == nil {
-		fmt.Println(p4[3])
-		p4[3] = "hello entire world!"
+		p4[3] = false
 	}
 	bs4, _ := json.Marshal(p4)
 	fmt.Println(string(bs4))
