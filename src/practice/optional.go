@@ -35,10 +35,19 @@ func main() {
 	//fmt.Println(App)
 
 	Args := make(params, 4)
-	Args[1] = 11
 	fmt.Println(Args)
 
 	App.ListTransactions(Args)
+
+	fmt.Println("~~~~~~~~~~~")
+
+	Args2 := make(params, 4)
+	Args2[1] = 20
+	Args2[2] = 100
+	Args2[3] = true
+	fmt.Println(Args2)
+
+	App.ListTransactions(Args2)
 
 }
 
