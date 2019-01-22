@@ -43,6 +43,18 @@ func main() {
 	fmt.Println(p3)
 	bs3, _ := json.Marshal(p3)
 	fmt.Println(string(bs3))
+
+	fmt.Println("-----")
+
+	p4 := make(params, 4)
+	fmt.Println(p4)
+	if p4[3] == nil {
+		fmt.Println(p4[3])
+		p4[3] = "hello entire world!"
+	}
+	bs4, _ := json.Marshal(p4)
+	fmt.Println(string(bs4))
+
 }
 
 
