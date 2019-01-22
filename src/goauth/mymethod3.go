@@ -96,6 +96,13 @@ type ListTransactions struct {
     
 }
 
+type ListTransactionsParams struct {
+    actname string
+    count int
+    frm int
+    incwch bool    
+}
+
 func (appName AppType) ListTransactions(actname string, count int, frm int, incwch bool) (ListTransactions, error) {
     query := APIQuery {
         Method: `listtransactions`,
