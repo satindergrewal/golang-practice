@@ -35,4 +35,8 @@ func main() {
 	bs, _ := json.Marshal(x)
 	fmt.Println(x)
 	fmt.Println(string(bs))
+
+	fmt.Println("~~~~~~~")
+
+	
 }
