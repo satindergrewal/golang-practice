@@ -24,4 +24,22 @@ func main() {
 
 	params_json, _ := json.Marshal(x)
 	fmt.Println(string(params_json))
+
+
+	type JsonObjArg struct {
+		Mode         string   `json:"mode"`
+		Capabilities []string `json:"capabilities"`
+	}
+
+	type capa []string
+
+	argg := capa{"hello", "world"}
+
+	fmt.Println(argg)
+
+	args := JsonObjArg{
+		"template",
+		[]string{"longpoll", "coinbasetxn", "coinbasevalue", "proposal", "serverlist", "workid"},
+	}
+	fmt.Println(args)
 }
