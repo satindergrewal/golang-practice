@@ -1,10 +1,12 @@
 package main
 
 import (
-	//"encoding/hex"
+	"encoding/hex"
 	"errors"
 	"fmt"
-
+	"crypto/rand"
+	"crypto/ecdsa"
+	//"crypto/elliptic"
 	"github.com/satindergrewal/kmdgo/btcec"
 	"github.com/satindergrewal/kmdgo/chaincfg"
 	"github.com/satindergrewal/kmdgo/kmdutil"
@@ -104,7 +106,52 @@ func (network Network) GetAddress(wif *kmdutil.WIF) (*kmdutil.AddressPubKey, err
 func main() {
 	fmt.Println("Starting the application...")
 	wif, _ := network["kmd"].CreatePrivateKey()
-	//fmt.Println(wif)
+	
+	fmt.Println("\n\n~~~~~~~")
+	fmt.Println("wif PrivKey: ", wif.PrivKey)
+	fmt.Println("wif PrivKey Serialize: ", wif.PrivKey.Serialize())
+	fmt.Println("wif PrivKey Serialize Length: ", len(wif.PrivKey.Serialize()))
+	fmt.Println("wif PubKey: ", wif.PrivKey.PubKey())
+	fmt.Println("wif PubKey SerializeCompressed: ", wif.PrivKey.PubKey().SerializeCompressed())
+	fmt.Println("wif PubKey SerializeCompressed Length: ", len(wif.PrivKey.PubKey().SerializeCompressed()))
+	fmt.Println("wif PubKey SerializeUncompressed: ", wif.PrivKey.PubKey().SerializeUncompressed())
+	fmt.Println("wif PubKey SerializeUncompressed Length: ", len(wif.PrivKey.PubKey().SerializeUncompressed()))
+	fmt.Println("~~~~~~~\n\n")
+
+	fmt.Println("\n\n~~~~~~~")	
+	PrivKeyBytes := wif.PrivKey.Serialize()
+
+	PrivKeyHex := make([]byte, hex.EncodedLen(len(PrivKeyBytes)))
+	hex.Encode(PrivKeyHex, PrivKeyBytes)
+
+	fmt.Printf("PrivKey Hex: %s\n", PrivKeyHex)
+	fmt.Println("~~~~~~~\n\n")
+
+
+
 	address, _ := network["kmd"].GetAddress(wif)
 	fmt.Printf("Wif Key: %s\nAddress: %s\n\n", wif.String(), address.EncodeAddress())
+
+	curve := btcec.S256()
+	randread := rand.Reader
+	fmt.Println("\nSHA256: ", curve)
+	fmt.Println("\nRandom: ", randread)
+
+	key, _ := ecdsa.GenerateKey(curve, randread)
+	/*if err != nil {
+		return nil, err
+	}*/
+	fmt.Println("Private Key: ", *key)
+	fmt.Printf("Private Key Type: %T\n\n", *key)
+	fmt.Println("Public Key: ", key.PublicKey)
+	fmt.Printf("Public Key Type: %T\n\n", key.PublicKey)
+	fmt.Printf("D: %s\nD Type: %T\n\n", key.D, key.D)
+	//fmt.Printf("ECDSA KEY: %s\nECDSA KEY Type: %T\n\n", key, key)
+
+	//var prvk kmdutil.WIF
+
+	//prvk = key
+	//prvk = key.privKey
+
+	//fmt.Println(prvk)
 }
