@@ -97,7 +97,7 @@ func (network Network) ImportWIF(wifStr string) (*btcutil.WIF, error) {
 }
 
 func (network Network) GetAddress(wif *btcutil.WIF) (*btcutil.AddressPubKey, error) {
-	fmt.Println(wif.PrivKey.PubKey().SerializeCompressed())
+	//fmt.Println(wif.PrivKey.PubKey().SerializeCompressed())
 	return btcutil.NewAddressPubKey(wif.PrivKey.PubKey().SerializeCompressed(), network.GetNetworkParams(true))
 }
 
@@ -106,5 +106,5 @@ func main() {
 	wif, _ := network["kmd"].CreatePrivateKey()
 	//fmt.Println(wif)
 	address, _ := network["kmd"].GetAddress(wif)
-	fmt.Printf("%s - %s\n", wif.String(), address.EncodeAddress())
+	fmt.Printf("Wif Key: %s\nAddress: %s\n\n", wif.String(), address.EncodeAddress())
 }
