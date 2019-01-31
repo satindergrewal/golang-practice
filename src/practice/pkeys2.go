@@ -5,9 +5,9 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcutil"
+	"github.com/satindergrewal/kmdgo/btcec"
+	"github.com/satindergrewal/kmdgo/chaincfg"
+	"github.com/satindergrewal/kmdgo/kmdutil"
 )
 
 type Network struct {
@@ -73,19 +73,19 @@ func (network Network) GetNetworkParams(display bool) *chaincfg.Params {
 	return networkParams
 }
 
-func (network Network) CreatePrivateKey() (*btcutil.WIF, error) {
+func (network Network) CreatePrivateKey() (*kmdutil.WIF, error) {
 	secret, err := btcec.NewPrivateKey(btcec.S256())
 	if err != nil {
 		return nil, err
 	}
 	//fmt.Println("secret: ", secret)
-	return btcutil.NewWIF(secret, network.GetNetworkParams(false), true)
+	return kmdutil.NewWIF(secret, network.GetNetworkParams(false), true)
 }
 
-//func (network Network) ImportPrivateKey(secretHex string) (*btcutil.WIF, error) { }
+//func (network Network) ImportPrivateKey(secretHex string) (*kmdutil.WIF, error) { }
 
-func (network Network) ImportWIF(wifStr string) (*btcutil.WIF, error) {
-	wif, err := btcutil.DecodeWIF(wifStr)
+func (network Network) ImportWIF(wifStr string) (*kmdutil.WIF, error) {
+	wif, err := kmdutil.DecodeWIF(wifStr)
 	if err != nil {
 		return nil, err
 	}
@@ -96,9 +96,9 @@ func (network Network) ImportWIF(wifStr string) (*btcutil.WIF, error) {
 	return wif, nil
 }
 
-func (network Network) GetAddress(wif *btcutil.WIF) (*btcutil.AddressPubKey, error) {
+func (network Network) GetAddress(wif *kmdutil.WIF) (*kmdutil.AddressPubKey, error) {
 	//fmt.Println(wif.PrivKey.PubKey().SerializeCompressed())
-	return btcutil.NewAddressPubKey(wif.PrivKey.PubKey().SerializeCompressed(), network.GetNetworkParams(true))
+	return kmdutil.NewAddressPubKey(wif.PrivKey.PubKey().SerializeCompressed(), network.GetNetworkParams(true))
 }
 
 func main() {
