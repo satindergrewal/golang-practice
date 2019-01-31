@@ -107,7 +107,9 @@ func main() {
 	fmt.Println("Starting the application...")
 	wif, _ := network["kmd"].CreatePrivateKey()
 	
-	fmt.Println("\n\n~~~~~~~")
+	fmt.Printf("\n")
+	
+	fmt.Println("~~~~~~~")
 	fmt.Println("wif PrivKey: ", wif.PrivKey)
 	fmt.Println("wif PrivKey Serialize: ", wif.PrivKey.Serialize())
 	fmt.Println("wif PrivKey Serialize Length: ", len(wif.PrivKey.Serialize()))
@@ -116,18 +118,29 @@ func main() {
 	fmt.Println("wif PubKey SerializeCompressed Length: ", len(wif.PrivKey.PubKey().SerializeCompressed()))
 	fmt.Println("wif PubKey SerializeUncompressed: ", wif.PrivKey.PubKey().SerializeUncompressed())
 	fmt.Println("wif PubKey SerializeUncompressed Length: ", len(wif.PrivKey.PubKey().SerializeUncompressed()))
-	fmt.Println("~~~~~~~\n\n")
+	fmt.Println("~~~~~~~")
+	
+	fmt.Printf("\n")
 
-	fmt.Println("\n\n~~~~~~~")	
+	fmt.Println("~~~~~~~")	
 	PrivKeyBytes := wif.PrivKey.Serialize()
-
 	PrivKeyHex := make([]byte, hex.EncodedLen(len(PrivKeyBytes)))
 	hex.Encode(PrivKeyHex, PrivKeyBytes)
 
+	PubKeyBytes := wif.PrivKey.PubKey().SerializeCompressed()
+	PubKeyHex := make([]byte, hex.EncodedLen(len(PubKeyBytes)))
+	hex.Encode(PubKeyHex, PubKeyBytes)
+
+	PubKeyBytesUn := wif.PrivKey.PubKey().SerializeUncompressed()
+	PubKeyHexUn := make([]byte, hex.EncodedLen(len(PubKeyBytesUn)))
+	hex.Encode(PubKeyHexUn, PubKeyBytesUn)
+
 	fmt.Printf("PrivKey Hex: %s\n", PrivKeyHex)
-	fmt.Println("~~~~~~~\n\n")
+	fmt.Printf("PubKey Compressed Hex: %s\n", PubKeyHex)
+	fmt.Printf("PubKey Uncompressed Hex: %s\n", PubKeyHexUn)
+	fmt.Println("~~~~~~~")
 
-
+	//fmt.Printf("\n")
 
 	address, _ := network["kmd"].GetAddress(wif)
 	fmt.Printf("Wif Key: %s\nAddress: %s\n\n", wif.String(), address.EncodeAddress())
