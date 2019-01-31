@@ -17,20 +17,22 @@ type Network struct {
 	symbol      string
 	xpubkey     byte
 	xprivatekey byte
+	scripthashaddr byte
 }
 
 var network = map[string]Network{
-	"rdd": {name: "reddcoin", symbol: "rdd", xpubkey: 0x3d, xprivatekey: 0xbd},
+	/*"rdd": {name: "reddcoin", symbol: "rdd", xpubkey: 0x3d, xprivatekey: 0xbd},
 	"dgb": {name: "digibyte", symbol: "dgb", xpubkey: 0x1e, xprivatekey: 0x80},
 	"btc": {name: "bitcoin", symbol: "btc", xpubkey: 0x00, xprivatekey: 0x80},
-	"ltc": {name: "litecoin", symbol: "ltc", xpubkey: 0x30, xprivatekey: 0xb0},
-	"kmd": {name: "Komodo", symbol: "kmd", xpubkey: 0x3c, xprivatekey: 0xb4},
+	"ltc": {name: "litecoin", symbol: "ltc", xpubkey: 0x30, xprivatekey: 0xb0},*/
+	"kmd": {name: "Komodo", symbol: "kmd", xpubkey: 0x3c, xprivatekey: 0xbc, scripthashaddr: 0x55},
 }
 
 func (network Network) GetNetworkParams(display bool) *chaincfg.Params {
 	networkParams := &chaincfg.MainNetParams
 	networkParams.PubKeyHashAddrID = network.xpubkey
 	networkParams.PrivateKeyID = network.xprivatekey
+	networkParams.ScriptHashAddrID = network.scripthashaddr
 
 	if display == true {
 		fmt.Println("\n~~~~~~~~")
@@ -159,12 +161,8 @@ func main() {
 	fmt.Println("Public Key: ", key.PublicKey)
 	fmt.Printf("Public Key Type: %T\n\n", key.PublicKey)
 	fmt.Printf("D: %s\nD Type: %T\n\n", key.D, key.D)
-	//fmt.Printf("ECDSA KEY: %s\nECDSA KEY Type: %T\n\n", key, key)
-
-	//var prvk kmdutil.WIF
-
-	//prvk = key
-	//prvk = key.privKey
-
-	//fmt.Println(prvk)
+	
+	fmt.Printf("0x%x\n", 188)
+	fmt.Printf("0x%x\n", 60)
+	fmt.Printf("0x%x\n", 85)
 }
