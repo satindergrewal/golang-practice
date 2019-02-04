@@ -57,6 +57,12 @@ func (network Network) CreatePrivateKey() (*kmdutil.WIF, error) {
 	return kmdutil.NewWIF(secret, network.GetNetworkParams(false), true)
 }
 
+func (network Network) WifFromHex(pkey *btcec.PrivateKey, b bool) (*kmdutil.WIF, error) {
+	secret:= pkey
+	fmt.Println("secret: ", secret)
+	return kmdutil.NewWIF(secret, network.GetNetworkParams(b), true)
+}
+
 //func (network Network) ImportPrivateKey(secretHex string) (*kmdutil.WIF, error) { }
 
 func (network Network) ImportWIF(wifStr string) (*kmdutil.WIF, error) {
@@ -71,13 +77,14 @@ func (network Network) ImportWIF(wifStr string) (*kmdutil.WIF, error) {
 	return wif, nil
 }
 
-func (network Network) GetAddress(wif *kmdutil.WIF) (*kmdutil.AddressPubKey, error) {
+func (network Network) GetAddress(wif *kmdutil.WIF, b bool) (*kmdutil.AddressPubKey, error) {
 	//fmt.Println(wif.PrivKey.PubKey().SerializeCompressed())
-	return kmdutil.NewAddressPubKey(wif.PrivKey.PubKey().SerializeCompressed(), network.GetNetworkParams(true))
+	return kmdutil.NewAddressPubKey(wif.PrivKey.PubKey().SerializeCompressed(), network.GetNetworkParams(b))
 }
 
 func main() {
-	tmp_hex := "04115c42e757b2efb7671c578530ec191a1359381e6a71127a9d37c486fd30dae57e76dc58f693bd7e7010358ce6b165e483a2921010db67ac11b1b51b651953d2"
+	//tmp_hex := "04115c42e757b2efb7671c578530ec191a1359381e6a71127a9d37c486fd30dae57e76dc58f693bd7e7010358ce6b165e483a2921010db67ac11b1b51b651953d2"
+	tmp_hex := "0481ac2e2cb36247af4668e1f5f03e87f7fc58507d21e863f63a176e643579ed8b638d39a07be407b04f0b1fddd7c0f291d9d55d37549e6f67b5a79f85d94a148d"
 	fmt.Println("tmp_hex: ", tmp_hex)
 
 	pkBytes, err := hex.DecodeString(tmp_hex)
@@ -165,9 +172,14 @@ func main() {
 	fmt.Printf("\n")
 
 	fmt.Println("~~~~~~~")
-	wif2 := &kmdutil.WIF{privKey, false, 0xbc}
+	wif2, _ := network["kmd"].WifFromHex(privKey, false)
+	//wif2 := kmdutil.NewWIF(secret, network.GetNetworkParams(false)
+	//wif2 := &kmdutil.WIF{privKey, false, 0xbc}
 	fmt.Println("wif2: ", wif2)
 
+	fmt.Printf("\n")
+	address, _ := network["kmd"].GetAddress(wif2, false)
+	fmt.Printf("Wif Key: %s\nAddress: %s\n\n", wif2.String(), address.EncodeAddress())
 
 
 }
