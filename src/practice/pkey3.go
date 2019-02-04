@@ -129,7 +129,7 @@ func main() {
 	}
 
 	wif := &WIF{privKey, false, 0xbc}
-	fmt.Println(*wif)
+	fmt.Println("wif: ", wif)
 	
 	fmt.Println("~~~~~~~")
 	fmt.Println("wif PrivKey: ", privKey)
@@ -145,20 +145,29 @@ func main() {
 	
 	fmt.Printf("\n")
 
-	//fmt.Println("~~~~~~~")
-	//PrivKeyBytes := wif.PrivKey.Serialize()
-	//PrivKeyHex := make([]byte, hex.EncodedLen(len(PrivKeyBytes)))
-	//hex.Encode(PrivKeyHex, PrivKeyBytes)
-	//fmt.Printf("PrivKey Hex: %s\n", PrivKeyHex)
+	fmt.Println("~~~~~~~")
+	PrivKeyBytes := wif.PrivKey.Serialize()
+	PrivKeyHex := make([]byte, hex.EncodedLen(len(PrivKeyBytes)))
+	hex.Encode(PrivKeyHex, PrivKeyBytes)
+	fmt.Printf("PrivKey Hex: %s\n", PrivKeyHex)
 
-	//PubKeyBytes := wif.PrivKey.PubKey().SerializeCompressed()
-	//PubKeyHex := make([]byte, hex.EncodedLen(len(PubKeyBytes)))
-	//hex.Encode(PubKeyHex, PubKeyBytes)
-	//fmt.Printf("PubKey Compressed Hex: %s\n", PubKeyHex)
+	PubKeyBytes := wif.PrivKey.PubKey().SerializeCompressed()
+	PubKeyHex := make([]byte, hex.EncodedLen(len(PubKeyBytes)))
+	hex.Encode(PubKeyHex, PubKeyBytes)
+	fmt.Printf("PubKey Compressed Hex: %s\n", PubKeyHex)
 
-	//PubKeyBytesUn := wif.PrivKey.PubKey().SerializeUncompressed()
-	//PubKeyHexUn := make([]byte, hex.EncodedLen(len(PubKeyBytesUn)))
-	//hex.Encode(PubKeyHexUn, PubKeyBytesUn)
-	//fmt.Printf("PubKey Uncompressed Hex: %s\n", PubKeyHexUn)
-	//fmt.Println("~~~~~~~")
+	PubKeyBytesUn := wif.PrivKey.PubKey().SerializeUncompressed()
+	PubKeyHexUn := make([]byte, hex.EncodedLen(len(PubKeyBytesUn)))
+	hex.Encode(PubKeyHexUn, PubKeyBytesUn)
+	fmt.Printf("PubKey Uncompressed Hex: %s\n", PubKeyHexUn)
+	fmt.Println("~~~~~~~")
+
+	fmt.Printf("\n")
+
+	fmt.Println("~~~~~~~")
+	wif2 := &kmdutil.WIF{privKey, false, 0xbc}
+	fmt.Println("wif2: ", wif2)
+
+
+
 }
