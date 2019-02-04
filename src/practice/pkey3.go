@@ -84,7 +84,8 @@ func (network Network) GetAddress(wif *kmdutil.WIF, b bool) (*kmdutil.AddressPub
 
 func main() {
 	//tmp_hex := "04115c42e757b2efb7671c578530ec191a1359381e6a71127a9d37c486fd30dae57e76dc58f693bd7e7010358ce6b165e483a2921010db67ac11b1b51b651953d2"
-	tmp_hex := "0481ac2e2cb36247af4668e1f5f03e87f7fc58507d21e863f63a176e643579ed8b638d39a07be407b04f0b1fddd7c0f291d9d55d37549e6f67b5a79f85d94a148d"
+	//tmp_hex := "0481ac2e2cb36247af4668e1f5f03e87f7fc58507d21e863f63a176e643579ed8b638d39a07be407b04f0b1fddd7c0f291d9d55d37549e6f67b5a79f85d94a148d"
+	tmp_hex := "0381ac2e2cb36247af4668e1f5f03e87f7fc58507d21e863f63a176e643579ed8b"
 	fmt.Println("tmp_hex: ", tmp_hex)
 
 	pkBytes, err := hex.DecodeString(tmp_hex)
@@ -180,6 +181,5 @@ func main() {
 	fmt.Printf("\n")
 	address, _ := network["kmd"].GetAddress(wif2, false)
 	fmt.Printf("Wif Key: %s\nAddress: %s\n\n", wif2.String(), address.EncodeAddress())
-
 
 }
