@@ -1,11 +1,11 @@
 package main
 
 import (
-	//"encoding/hex"
+	"encoding/hex"
 	"errors"
 	"fmt"
-	"crypto/rand"
-	"crypto/ecdsa"
+	//"crypto/rand"
+	//"crypto/ecdsa"
 	//"crypto/elliptic"
 	//"crypto/sha256"
 	//"golang.org/x/crypto/ripemd160"
@@ -58,7 +58,7 @@ func (network Network) CreatePrivateKey() (*kmdutil.WIF, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println("secret: ", secret)
+	//fmt.Println("secret: ", secret)
 	return kmdutil.NewWIF(secret, network.GetNetworkParams(false), true)
 }
 
@@ -87,21 +87,21 @@ func main() {
 	//fmt.Println(sha256.New())
 	//fmt.Println(ripemd160.New())
 
-/*	wif, _ := network["kmd"].CreatePrivateKey()
-	
+	wif, _ := network["kmd"].CreatePrivateKey()
+	fmt.Println("wif: ", *wif)
+
 	fmt.Printf("\n")
 	
 	fmt.Println("~~~~~~~")
 	fmt.Println("wif PrivKey: ", wif.PrivKey)
-	//fmt.Println("wif PrivKey Serialize: ", wif.PrivKey.Serialize())
-	//fmt.Println("wif PrivKey Serialize Length: ", len(wif.PrivKey.Serialize()))
+	fmt.Println("wif PrivKey Serialize: ", wif.PrivKey.Serialize())
+	fmt.Println("wif PrivKey Serialize Length: ", len(wif.PrivKey.Serialize()))
 	fmt.Println("wif PubKey: ", wif.PrivKey.PubKey())
 	fmt.Println("wif PubKey SerializeCompressed: ", wif.PrivKey.PubKey().SerializeCompressed())
 	fmt.Println("wif PubKey SerializeCompressed Length: ", len(wif.PrivKey.PubKey().SerializeCompressed()))
-	//fmt.Println("wif PubKey SerializeUncompressed: ", wif.PrivKey.PubKey().SerializeUncompressed())
-	//fmt.Println("wif PubKey SerializeUncompressed Length: ", len(wif.PrivKey.PubKey().SerializeUncompressed()))
+	fmt.Println("wif PubKey SerializeUncompressed: ", wif.PrivKey.PubKey().SerializeUncompressed())
+	fmt.Println("wif PubKey SerializeUncompressed Length: ", len(wif.PrivKey.PubKey().SerializeUncompressed()))
 	fmt.Println("wif CompressPubKey: ", wif.CompressPubKey)
-	fmt.Println("wif netID: ", wif)
 	fmt.Println("~~~~~~~")
 	
 	fmt.Printf("\n")
@@ -123,12 +123,12 @@ func main() {
 	fmt.Printf("PubKey Uncompressed Hex: %s\n", PubKeyHexUn)
 	fmt.Println("~~~~~~~")
 
-	//fmt.Printf("\n")
-
+	fmt.Printf("\n")
 	address, _ := network["kmd"].GetAddress(wif)
 	fmt.Printf("Wif Key: %s\nAddress: %s\n\n", wif.String(), address.EncodeAddress())
-*/
-	
+
+
+/*	
 	// Get secp256k1 hash
 	curve := btcec.S256()
 
@@ -144,6 +144,41 @@ func main() {
 	fmt.Println("Public Key: ", key.PublicKey)
 	fmt.Printf("Public Key Type: %T\n\n", key.PublicKey)
 	fmt.Printf("D: %s\nD Type: %T\n\n", key.D, key.D)
+
+
+	type WIF struct {
+	// PrivKey is the private key being imported or exported.
+		PrivKey *ecdsa.PrivateKey
+
+		// CompressPubKey specifies whether the address controlled by the
+		// imported or exported private key was created by hashing a
+		// compressed (33-byte) serialized public key, rather than an
+		// uncompressed (65-byte) one.
+		CompressPubKey bool
+
+		// netID is the bitcoin network identifier byte used when
+		// WIF encoding the private key.
+		netID byte
+	}
+
+	_wif := &WIF{key, true, 0xbc}
+	fmt.Println(*_wif)
+*/
+
+	//fmt.Printf("\n")
+
+	//fmt.Println("~~~~~~~")
+	//fmt.Println("_wif PrivKey: ", _wif.PrivKey)
+	//fmt.Println("_wif PrivKey Serialize: ", _wif.PrivKey.Serialize())
+	//fmt.Println("_wif PrivKey Serialize Length: ", len(_wif.PrivKey.Serialize()))
+	//fmt.Println("_wif PubKey: ", _wif.PrivKey.PubKey())
+	//fmt.Println("_wif PubKey SerializeCompressed: ", _wif.PrivKey.PubKey().SerializeCompressed())
+	//fmt.Println("_wif PubKey SerializeCompressed Length: ", len(_wif.PrivKey.PubKey().SerializeCompressed()))
+	//fmt.Println("_wif PubKey SerializeUncompressed: ", _wif.PrivKey.PubKey().SerializeUncompressed())
+	//fmt.Println("_wif PubKey SerializeUncompressed Length: ", len(_wif.PrivKey.PubKey().SerializeUncompressed()))
+	//fmt.Println("_wif CompressPubKey: ", _wif.CompressPubKey)
+	//fmt.Println("_wif netID: ", _wif)
+	//fmt.Println("~~~~~~~")
 	
 	//fmt.Printf("0x%x\n", 188)
 	//fmt.Printf("0x%x\n", 60)
@@ -155,4 +190,11 @@ func main() {
 
 	//hsh := kmdutil.Hash160(wif.PrivKey.Serialize())
 	//fmt.Println(hsh)
+
+
+	//h := sha256.New()
+	//h.Write([]byte("satinder"))
+	//fmt.Printf("SHA256: %x\n", h.Sum(nil))
+
+	//RPdW5oL5icgDEA9gfDMecwvcwKzreLDHrH
 }
