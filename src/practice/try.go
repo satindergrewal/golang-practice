@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"os/signal"
+	//"os/signal"
 	"strings"
-	"syscall"
+	//"syscall"
 
 	//"github.com/codegangsta/cli"
 
@@ -47,21 +47,25 @@ func main() {
 		exit(err, 3)
 	}
 
-	ctx, cancel := context.WithCancel(context.Background())
-	gCtx, gCancel := context.WithCancel(context.Background())
+	//ctx, cancel := context.WithCancel(context.Background())
+	//gCtx, gCancel := context.WithCancel(context.Background())
 
 	log.Printf("GoTTY is starting with command: %s %s", cmd, strings.Join(cmd_args, " "))
 
-	errs := make(chan error, 1)
-	go func() {
-		errs <- srv.Run(ctx, server.WithGracefullContext(gCtx))
-	}()
-	err = waitSignals(errs, cancel, gCancel)
+	//errs := make(chan error, 1)
+	//go func() {
+		//errs <- srv.Run(ctx, server.WithGracefullContext(gCtx))
+	//}()
+	//err = waitSignals(errs, cancel, gCancel)
 
-	if err != nil && err != context.Canceled {
+	ctx, _ := context.WithCancel(context.Background())
+	gCtx, _ := context.WithCancel(context.Background())
+	srv.Run(ctx, server.WithGracefullContext(gCtx))
+
+	/*if err != nil && err != context.Canceled {
 		fmt.Printf("Error: %s\n", err)
 		exit(err, 8)
-	}
+	}*/
 }
 
 func exit(err error, code int) {
@@ -70,7 +74,7 @@ func exit(err error, code int) {
 	}
 	os.Exit(code)
 }
-
+/*
 func waitSignals(errs chan error, cancel context.CancelFunc, gracefullCancel context.CancelFunc) error {
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(
@@ -101,4 +105,4 @@ func waitSignals(errs chan error, cancel context.CancelFunc, gracefullCancel con
 			return <-errs
 		}
 	}
-}
+}*/
