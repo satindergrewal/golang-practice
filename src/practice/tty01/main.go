@@ -15,6 +15,8 @@ import (
 	"github.com/yudai/gotty/backend/localcommand"
 	"github.com/yudai/gotty/server"
 	"github.com/yudai/gotty/utils"
+
+	"github.com/satindergrewal/kmdgo/kmdutil"
 )
 
 var tpl *template.Template
@@ -23,13 +25,25 @@ func init() {
 	tpl = template.Must(template.ParseGlob("templates/*"))
 }
 
-type person struct {
-	FirstName  string
-	LastName   string
-	Subscribed bool
+type ttycommand struct {
+	Command  string
+	Arguments   string
+	//Subscribed bool
 }
 
 func main() {
+	
+	appName := "ROGUE"
+	dir := kmdutil.AppDataDir(appName, false)
+	fmt.Println(dir, "\n")
+
+	err := os.Chdir(dir)
+	if err != nil {
+		fmt.Println(err)
+	}
+	d, _ := os.Getwd()
+	fmt.Println(d)
+
 	http.HandleFunc("/", foo)
 	http.HandleFunc("/tty", tty)
 	http.Handle("/favicon.ico", http.NotFoundHandler())
@@ -38,11 +52,10 @@ func main() {
 
 func foo(w http.ResponseWriter, req *http.Request) {
 
-	f := req.FormValue("first")
-	l := req.FormValue("last")
-	s := req.FormValue("subscribe") == "on"
+	c := req.FormValue("cmd")
+	a := req.FormValue("args")
 
-	err := tpl.ExecuteTemplate(w, "index.gohtml", person{f, l, s})
+	err := tpl.ExecuteTemplate(w, "index.gohtml", ttycommand{c, a})
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		log.Fatalln(err)
@@ -52,8 +65,11 @@ func foo(w http.ResponseWriter, req *http.Request) {
 
 func tty(w http.ResponseWriter, req *http.Request) {
 
-	v := req.FormValue("q")
-	fmt.Fprintln(w, "Do my search: "+v)
+	//v := req.FormValue("q")
+	//fmt.Fprintln(w, "Do my search: "+v)
+	c := req.FormValue("cmd")
+	a := req.FormValue("args")
+	fmt.Println(a)
 
 	// visit this page:
 	// http://localhost:8080/tty?q=dog
@@ -71,21 +87,27 @@ func tty(w http.ResponseWriter, req *http.Request) {
 	//cmd_args := []string{"hello"}
 
 	var cmd string
-	if v != `exit` || v == "" {
-		cmd = v
+	if c != `exit` || c == "" {
+		cmd = c
 	} else {
 		exit(nil, 1)
 	}
-	cmd_args := []string{}
+	//cmd_args := []string{}
+	cmd_args := strings.Fields(a)
+	fmt.Println("%T", cmd_args)
 
 	factory, err := localcommand.NewFactory(cmd, cmd_args, backendOptions)
 	if err != nil {
 		exit(err, 3)
 	}
 
+	d, _ := os.Getwd()
+	fmt.Println(d)
+
 	hostname, _ := os.Hostname()
 	appOptions.Port = `8082`
 	appOptions.PermitWrite = true
+	appOptions.Once = true
 	appOptions.TitleVariables = map[string]interface{}{
 		"command":  cmd,
 		"argv":     cmd_args,
@@ -99,11 +121,10 @@ func tty(w http.ResponseWriter, req *http.Request) {
 
 	log.Printf("GoTTY is starting with command: %s %s", cmd, strings.Join(cmd_args, " "))
 
-	w.Header().Set("Location", "/")
-	w.WriteHeader(http.StatusSeeOther)
 	ctx, _ := context.WithCancel(context.Background())
 	gCtx, _ := context.WithCancel(context.Background())
-	srv.Run(ctx, server.WithGracefullContext(gCtx))
+	go srv.Run(ctx, server.WithGracefullContext(gCtx))
+	http.Redirect(w, req, "http://localhost:8082", http.StatusSeeOther)
 }
 
 func exit(err error, code int) {
