@@ -69,7 +69,8 @@ func tty(w http.ResponseWriter, req *http.Request) {
 	//fmt.Fprintln(w, "Do my search: "+v)
 	c := req.FormValue("cmd")
 	a := req.FormValue("args")
-	fmt.Println(a)
+	fmt.Println(c)
+	//fmt.Println(a)
 
 	// visit this page:
 	// http://localhost:8080/tty?q=dog
@@ -87,15 +88,13 @@ func tty(w http.ResponseWriter, req *http.Request) {
 	//cmd_args := []string{"hello"}
 
 	//var cmd string
-	//if c != `exit` || c == "" {
-		//cmd = c
-	//} else {
-		//exit(nil, 1)
+	//if c == `exit` || c != "" {
+		//http.Redirect(w, req, "http://localhost:8081", http.StatusSeeOther)
 	//}
 	//cmd_args := []string{}
 	cmd := c
 	cmd_args := strings.Fields(a)
-	fmt.Println("%T", cmd_args)
+	fmt.Printf("%T\n", cmd_args)
 
 	factory, err := localcommand.NewFactory(cmd, cmd_args, backendOptions)
 	if err != nil {
@@ -125,7 +124,13 @@ func tty(w http.ResponseWriter, req *http.Request) {
 	ctx, _ := context.WithCancel(context.Background())
 	gCtx, _ := context.WithCancel(context.Background())
 	go srv.Run(ctx, server.WithGracefullContext(gCtx))
-	http.Redirect(w, req, "http://localhost:8082", http.StatusSeeOther)
+	//http.Redirect(w, req, "http://localhost:8082", http.StatusSeeOther)
+
+	err = tpl.ExecuteTemplate(w, "play.gohtml", nil)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		log.Fatalln(err)
+	}
 }
 
 func exit(err error, code int) {
