@@ -10,10 +10,10 @@ import (
 )
 
 type Network struct {
-	name        string
-	symbol      string
-	xpubkey     byte
-	xprivatekey byte
+	name           string
+	symbol         string
+	xpubkey        byte
+	xprivatekey    byte
 	scripthashaddr byte
 }
 
@@ -44,7 +44,7 @@ func (network Network) GetNetworkParams(display bool) *chaincfg.Params {
 		fmt.Println("PrivateKeyID: ", networkParams.PrivateKeyID)
 		fmt.Println("~~~~~~~~\n")
 	}
-	
+
 	return networkParams
 }
 
@@ -58,7 +58,7 @@ func (network Network) CreatePrivateKey() (*kmdutil.WIF, error) {
 }
 
 func (network Network) WifFromHex(pkey *btcec.PrivateKey, b bool) (*kmdutil.WIF, error) {
-	secret:= pkey
+	secret := pkey
 	fmt.Println("secret: ", secret)
 	return kmdutil.NewWIF(secret, network.GetNetworkParams(b), true)
 }
@@ -91,14 +91,14 @@ func main() {
 	pkBytes, err := hex.DecodeString(tmp_hex)
 	if err != nil {
 		fmt.Println(err)
-	return
+		return
 	}
 	fmt.Println("pkBytes: ", pkBytes)
 	fmt.Println("pkBytes Length: ", len(pkBytes))
 	fmt.Println("~~~~~~~")
 
 	fmt.Printf("\n")
-	
+
 	fmt.Println("~~~~~~~")
 
 	privKey, pubKey := btcec.PrivKeyFromBytes(btcec.S256(), pkBytes)
@@ -108,11 +108,10 @@ func main() {
 	fmt.Println("~~~~~~~")
 
 	fmt.Printf("\n")
-	
+
 	fmt.Println("~~~~~~~")
 	fmt.Println("pubKey: ", pubKey)
 	fmt.Printf("pubKey Type: %T\n", pubKey)
-
 
 	publicKey, err := btcec.ParsePubKey(pkBytes, btcec.S256())
 	if err != nil {
@@ -122,23 +121,22 @@ func main() {
 	fmt.Println("~~~~~~~")
 
 	fmt.Printf("\n")
-	
+
 	fmt.Println("~~~~~~~")
 	fmt.Println("publicKey: ", *publicKey)
 	fmt.Printf("publicKey: %T\n", publicKey)
 
-
 	fmt.Printf("\n")
 
 	type WIF struct {
-		PrivKey *btcec.PrivateKey
+		PrivKey        *btcec.PrivateKey
 		CompressPubKey bool
-		netID byte
+		netID          byte
 	}
 
 	wif := &WIF{privKey, false, 0xbc}
 	fmt.Println("wif: ", wif)
-	
+
 	fmt.Println("~~~~~~~")
 	fmt.Println("wif PrivKey: ", privKey)
 	fmt.Println("wif PrivKey Serialize: ", wif.PrivKey.Serialize())
@@ -150,7 +148,7 @@ func main() {
 	fmt.Println("wif PubKey SerializeUncompressed Length: ", len(wif.PrivKey.PubKey().SerializeUncompressed()))
 	fmt.Println("wif CompressPubKey: ", wif.CompressPubKey)
 	fmt.Println("~~~~~~~")
-	
+
 	fmt.Printf("\n")
 
 	fmt.Println("~~~~~~~")

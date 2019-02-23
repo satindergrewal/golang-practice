@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"encoding/json"
+	"fmt"
 )
 
 func main() {
@@ -20,7 +20,7 @@ func main() {
 	fmt.Printf("%T\t %t\n", x[2], x[2])
 	fmt.Printf("%T\t %s\n", x[3], x[3])
 	fmt.Printf("%T\t %s\n", x[4], x[4])
-	
+
 	if x[4] == nil {
 		fmt.Println("THIS IS NIL!!!")
 	}
@@ -38,5 +38,4 @@ func main() {
 
 	fmt.Println("~~~~~~~")
 
-	
 }

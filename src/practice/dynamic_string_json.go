@@ -11,10 +11,10 @@ type meminfo struct {
 
 type memfalse struct {
 	//Result interface{}    `json:"result"`
-  Result map[string]memtrue    `json:"result"`
-  //Result []string    `json:"result"`
-	Error  interface{} `json:"error"`
-	ID     string      `json:"id"`
+	Result map[string]memtrue `json:"result"`
+	//Result []string    `json:"result"`
+	Error interface{} `json:"error"`
+	ID    string      `json:"id"`
 }
 
 type memtrue struct {
@@ -35,9 +35,7 @@ func main() {
 	a := meminfo{"World"}
 	a.greeting()
 
-
-
-  mfJson := `{"result":[
+	mfJson := `{"result":[
   "7921fbd3ad4d1593aa580833946cb123260f81480069a37f649d2c8cc10d770b",
   "7a1cae3b6e7dcaf94e2422b75aa4eb13fd54de1094e23a2fc46346a4d7d40448"
 ],"error":null,"id":"curltest"}`
@@ -65,29 +63,27 @@ func main() {
     ]
   }
 },"error":null,"id":"curltest"}`
-  
-  fmt.Println()
-  fmt.Println(mfJson)
-  fmt.Println()
-  fmt.Println(mtJson)
+
+	fmt.Println()
+	fmt.Println(mfJson)
+	fmt.Println()
+	fmt.Println(mtJson)
 
 	var result memfalse
-  json.Unmarshal([]byte(mtJson), &result)
+	json.Unmarshal([]byte(mtJson), &result)
 
+	fmt.Println("-----")
+	fmt.Println(result.Result)
+	fmt.Printf("%T\n", result.Result)
 
-  fmt.Println("-----")
-  fmt.Println(result.Result)
-  fmt.Printf("%T\n", result.Result)
+	fmt.Println(len(result.Result))
+	fmt.Println(result.Result["7a1cae3b6e7dcaf94e2422b75aa4eb13fd54de1094e23a2fc46346a4d7d40448"])
+	fmt.Println(result.Result["7a1cae3b6e7dcaf94e2422b75aa4eb13fd54de1094e23a2fc46346a4d7d40448"].Size)
 
-  fmt.Println(len(result.Result))
-  fmt.Println(result.Result["7a1cae3b6e7dcaf94e2422b75aa4eb13fd54de1094e23a2fc46346a4d7d40448"])
-  fmt.Println(result.Result["7a1cae3b6e7dcaf94e2422b75aa4eb13fd54de1094e23a2fc46346a4d7d40448"].Size)
-
-
-  fmt.Println("-----")
-  for i, v := range result.Result {
-    fmt.Println(i)
-    fmt.Println(v)
-    fmt.Println(v.Size)
-  }
+	fmt.Println("-----")
+	for i, v := range result.Result {
+		fmt.Println(i)
+		fmt.Println(v)
+		fmt.Println(v.Size)
+	}
 }

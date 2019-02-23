@@ -15,10 +15,10 @@ import (
 )
 
 type Network struct {
-	name        string
-	symbol      string
-	xpubkey     byte
-	xprivatekey byte
+	name           string
+	symbol         string
+	xpubkey        byte
+	xprivatekey    byte
 	scripthashaddr byte
 }
 
@@ -49,7 +49,7 @@ func (network Network) GetNetworkParams(display bool) *chaincfg.Params {
 		fmt.Println("PrivateKeyID: ", networkParams.PrivateKeyID)
 		fmt.Println("~~~~~~~~\n")
 	}
-	
+
 	return networkParams
 }
 
@@ -91,7 +91,7 @@ func main() {
 	fmt.Println("wif: ", *wif)
 
 	fmt.Printf("\n")
-	
+
 	fmt.Println("~~~~~~~")
 	fmt.Println("wif PrivKey: ", wif.PrivKey)
 	fmt.Println("wif PrivKey Serialize: ", wif.PrivKey.Serialize())
@@ -103,7 +103,7 @@ func main() {
 	fmt.Println("wif PubKey SerializeUncompressed Length: ", len(wif.PrivKey.PubKey().SerializeUncompressed()))
 	fmt.Println("wif CompressPubKey: ", wif.CompressPubKey)
 	fmt.Println("~~~~~~~")
-	
+
 	fmt.Printf("\n")
 
 	fmt.Println("~~~~~~~")
@@ -127,43 +127,42 @@ func main() {
 	address, _ := network["kmd"].GetAddress(wif)
 	fmt.Printf("Wif Key: %s\nAddress: %s\n\n", wif.String(), address.EncodeAddress())
 
+	/*
+		// Get secp256k1 hash
+		curve := btcec.S256()
 
-/*	
-	// Get secp256k1 hash
-	curve := btcec.S256()
+		// Get Random number
+		randread := rand.Reader
 
-	// Get Random number
-	randread := rand.Reader
+		fmt.Println("\nsecp256k1: ", curve)
+		fmt.Println("\nRandom: ", randread)
 
-	fmt.Println("\nsecp256k1: ", curve)
-	fmt.Println("\nRandom: ", randread)
-
-	key, _ := ecdsa.GenerateKey(curve, randread)
-	fmt.Println("Private Key: ", *key)
-	fmt.Printf("Private Key Type: %T\n\n", *key)
-	fmt.Println("Public Key: ", key.PublicKey)
-	fmt.Printf("Public Key Type: %T\n\n", key.PublicKey)
-	fmt.Printf("D: %s\nD Type: %T\n\n", key.D, key.D)
+		key, _ := ecdsa.GenerateKey(curve, randread)
+		fmt.Println("Private Key: ", *key)
+		fmt.Printf("Private Key Type: %T\n\n", *key)
+		fmt.Println("Public Key: ", key.PublicKey)
+		fmt.Printf("Public Key Type: %T\n\n", key.PublicKey)
+		fmt.Printf("D: %s\nD Type: %T\n\n", key.D, key.D)
 
 
-	type WIF struct {
-	// PrivKey is the private key being imported or exported.
-		PrivKey *ecdsa.PrivateKey
+		type WIF struct {
+		// PrivKey is the private key being imported or exported.
+			PrivKey *ecdsa.PrivateKey
 
-		// CompressPubKey specifies whether the address controlled by the
-		// imported or exported private key was created by hashing a
-		// compressed (33-byte) serialized public key, rather than an
-		// uncompressed (65-byte) one.
-		CompressPubKey bool
+			// CompressPubKey specifies whether the address controlled by the
+			// imported or exported private key was created by hashing a
+			// compressed (33-byte) serialized public key, rather than an
+			// uncompressed (65-byte) one.
+			CompressPubKey bool
 
-		// netID is the bitcoin network identifier byte used when
-		// WIF encoding the private key.
-		netID byte
-	}
+			// netID is the bitcoin network identifier byte used when
+			// WIF encoding the private key.
+			netID byte
+		}
 
-	_wif := &WIF{key, true, 0xbc}
-	fmt.Println(*_wif)
-*/
+		_wif := &WIF{key, true, 0xbc}
+		fmt.Println(*_wif)
+	*/
 
 	//fmt.Printf("\n")
 
@@ -179,18 +178,17 @@ func main() {
 	//fmt.Println("_wif CompressPubKey: ", _wif.CompressPubKey)
 	//fmt.Println("_wif netID: ", _wif)
 	//fmt.Println("~~~~~~~")
-	
+
 	//fmt.Printf("0x%x\n", 188)
 	//fmt.Printf("0x%x\n", 60)
 	//fmt.Printf("0x%x\n", 85)
 
 	//fmt.Printf("\n")
 
-	//fmt.Println("~~~~~~~")	
+	//fmt.Println("~~~~~~~")
 
 	//hsh := kmdutil.Hash160(wif.PrivKey.Serialize())
 	//fmt.Println(hsh)
-
 
 	//h := sha256.New()
 	//h.Write([]byte("satinder"))

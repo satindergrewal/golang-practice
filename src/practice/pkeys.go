@@ -24,7 +24,7 @@ func main() {
 	pkBytes, err := hex.DecodeString(tmp_hex)
 	if err != nil {
 		fmt.Println(err)
-	return
+		return
 	}
 	fmt.Println("pkBytes: ", pkBytes)
 	fmt.Println("pkBytes Length: ", len(pkBytes))
@@ -35,7 +35,6 @@ func main() {
 	fmt.Printf("privKey Type: %T\n", privKey)
 	fmt.Println("pubKey: ", pubKey)
 	fmt.Printf("pubKey Type: %T\n", pubKey)
-
 
 	publicKey, err := btcec.ParsePubKey(pkBytes, btcec.S256())
 	if err != nil {

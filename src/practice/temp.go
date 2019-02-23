@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"encoding/json"
+	"fmt"
 )
 
 func main() {
@@ -24,7 +24,6 @@ func main() {
 
 	params_json, _ := json.Marshal(x)
 	fmt.Println(string(params_json))
-
 
 	type JsonObjArg struct {
 		Mode         string   `json:"mode"`

@@ -1,10 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
-	"fmt"
 
 	"context"
 	"os"
@@ -26,13 +26,13 @@ func init() {
 }
 
 type ttycommand struct {
-	Command  string
-	Arguments   string
+	Command   string
+	Arguments string
 	//Subscribed bool
 }
 
 func main() {
-	
+
 	appName := "ROGUE"
 	dir := kmdutil.AppDataDir(appName, false)
 	fmt.Println(dir, "\n")
@@ -62,7 +62,6 @@ func foo(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
-
 func tty(w http.ResponseWriter, req *http.Request) {
 
 	//v := req.FormValue("q")
@@ -88,9 +87,9 @@ func tty(w http.ResponseWriter, req *http.Request) {
 
 	//var cmd string
 	//if c != `exit` || c == "" {
-		//cmd = c
+	//cmd = c
 	//} else {
-		//exit(nil, 1)
+	//exit(nil, 1)
 	//}
 	//cmd_args := []string{}
 	cmd := c

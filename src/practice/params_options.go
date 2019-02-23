@@ -6,10 +6,10 @@ import (
 )
 
 type person struct {
-	Actname	string	`json:",actname"`
-	Count	int		`json:"count"`
-	Frm		int		`json:"frm"`
-	Incwch	bool	`json:"incwch"`
+	Actname string `json:",actname"`
+	Count   int    `json:"count"`
+	Frm     int    `json:"frm"`
+	Incwch  bool   `json:"incwch"`
 }
 
 type params []interface{}
@@ -21,10 +21,10 @@ func main() {
 	fmt.Println(p1)
 	fmt.Println(string(bs))
 	fmt.Println("-----")
-	
+
 	p2 := person{
 		Actname: "eftpos",
-		Count: 11,
+		Count:   11,
 	}
 	if p2.Count == 0 {
 		p2.Count = 10
@@ -48,7 +48,7 @@ func main() {
 
 	p4 := make(params, 4)
 	fmt.Println(p4)
-	
+
 	if p4[0] == nil {
 		p4[0] = "*"
 	}
@@ -66,7 +66,6 @@ func main() {
 	fmt.Println(string(bs4))
 
 }
-
 
 /*
 

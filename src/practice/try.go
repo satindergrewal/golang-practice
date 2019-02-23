@@ -54,7 +54,7 @@ func main() {
 
 	//errs := make(chan error, 1)
 	//go func() {
-		//errs <- srv.Run(ctx, server.WithGracefullContext(gCtx))
+	//errs <- srv.Run(ctx, server.WithGracefullContext(gCtx))
 	//}()
 	//err = waitSignals(errs, cancel, gCancel)
 
@@ -74,6 +74,7 @@ func exit(err error, code int) {
 	}
 	os.Exit(code)
 }
+
 /*
 func waitSignals(errs chan error, cancel context.CancelFunc, gracefullCancel context.CancelFunc) error {
 	sigChan := make(chan os.Signal, 1)

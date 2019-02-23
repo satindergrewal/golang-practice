@@ -1,11 +1,11 @@
 package main
 
 import (
+	"crypto/ecdsa"
+	"crypto/rand"
 	"encoding/hex"
 	"errors"
 	"fmt"
-	"crypto/rand"
-	"crypto/ecdsa"
 	//"crypto/elliptic"
 	"github.com/satindergrewal/kmdgo/btcec"
 	"github.com/satindergrewal/kmdgo/chaincfg"
@@ -13,10 +13,10 @@ import (
 )
 
 type Network struct {
-	name        string
-	symbol      string
-	xpubkey     byte
-	xprivatekey byte
+	name           string
+	symbol         string
+	xpubkey        byte
+	xprivatekey    byte
 	scripthashaddr byte
 }
 
@@ -73,7 +73,7 @@ func (network Network) GetNetworkParams(display bool) *chaincfg.Params {
 		//fmt.Println("HDCoinType: ", networkParams.HDCoinType)
 		fmt.Println("~~~~~~~~\n")
 	}
-	
+
 	return networkParams
 }
 
@@ -108,9 +108,9 @@ func (network Network) GetAddress(wif *kmdutil.WIF) (*kmdutil.AddressPubKey, err
 func main() {
 	fmt.Println("Starting the application...")
 	wif, _ := network["kmd"].CreatePrivateKey()
-	
+
 	fmt.Printf("\n")
-	
+
 	fmt.Println("~~~~~~~")
 	fmt.Println("wif PrivKey: ", wif.PrivKey)
 	fmt.Println("wif PrivKey Serialize: ", wif.PrivKey.Serialize())
@@ -121,10 +121,10 @@ func main() {
 	fmt.Println("wif PubKey SerializeUncompressed: ", wif.PrivKey.PubKey().SerializeUncompressed())
 	fmt.Println("wif PubKey SerializeUncompressed Length: ", len(wif.PrivKey.PubKey().SerializeUncompressed()))
 	fmt.Println("~~~~~~~")
-	
+
 	fmt.Printf("\n")
 
-	fmt.Println("~~~~~~~")	
+	fmt.Println("~~~~~~~")
 	PrivKeyBytes := wif.PrivKey.Serialize()
 	PrivKeyHex := make([]byte, hex.EncodedLen(len(PrivKeyBytes)))
 	hex.Encode(PrivKeyHex, PrivKeyBytes)
@@ -161,7 +161,7 @@ func main() {
 	fmt.Println("Public Key: ", key.PublicKey)
 	fmt.Printf("Public Key Type: %T\n\n", key.PublicKey)
 	fmt.Printf("D: %s\nD Type: %T\n\n", key.D, key.D)
-	
+
 	fmt.Printf("0x%x\n", 188)
 	fmt.Printf("0x%x\n", 60)
 	fmt.Printf("0x%x\n", 85)
