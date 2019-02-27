@@ -9,9 +9,8 @@ import (
 
 	"context"
 	"os"
-	//"os/signal"
+	"runtime"
 	"strings"
-	//"syscall"
 
 	"github.com/yudai/gotty/backend/localcommand"
 	"github.com/yudai/gotty/server"
@@ -140,16 +139,51 @@ func tty(w http.ResponseWriter, req *http.Request) {
 
 	log.Printf("GoTTY is starting with command: %s %s", cmd, strings.Join(cmd_args, " "))
 
-	ctx, _ := context.WithCancel(context.Background())
-	gCtx, _ := context.WithCancel(context.Background())
-	go srv.Run(ctx, server.WithGracefullContext(gCtx))
+	//ctx, _ := context.WithCancel(context.Background())
+	//gCtx, _ := context.WithCancel(context.Background())
+	//go srv.Run(ctx, server.WithGracefullContext(gCtx))
 	//http.Redirect(w, req, "http://localhost:8082", http.StatusSeeOther)
+
+	ctx, cancel := context.WithCancel(context.Background())
+	gCtx, _ := context.WithCancel(context.Background())
+
+	errs := make(chan error, 1)
+	go func() {
+		errs <- srv.Run(ctx, server.WithGracefullContext(gCtx))
+	}()
 
 	err = tpl.ExecuteTemplate(w, "play.gohtml", nil)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		log.Fatalln(err)
 	}
+
+	go func() {
+		for {
+			err := <-errs
+			cancel()
+			fmt.Println("%T", err)
+			fmt.Println("<<--errs: ", err)
+			fmt.Println("----------")
+			fmt.Println("context err after Game end:\t", ctx.Err())
+			fmt.Printf("context type after Game end:\t%T\n", ctx)
+			fmt.Println("Goroutines after Game end\t", runtime.NumGoroutine())
+			return
+		}
+	}()
+
+	fmt.Println("----------")
+	fmt.Println("context before Game end:\t", ctx)
+	fmt.Println("context err before Game end:\t", ctx.Err())
+	fmt.Printf("context type before Game end:\t%T\n", ctx)
+	fmt.Println("Goroutines before Game end\t", runtime.NumGoroutine())
+
+	/*err = waitSignals(errs, cancel, gCancel)
+
+	if err != nil && err != context.Canceled {
+		fmt.Printf("Error: %s\n", err)
+		//exit(err, 8)
+	}*/
 }
 
 func exit(err error, code int) {
