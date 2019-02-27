@@ -1,4 +1,13 @@
 {{define "footer"}}
+<script>
+	var ws = new WebSocket("ws://localhost:8081/sockets")
+	ws.addEventListener("message", function(e) {console.log(e);});
+	ws.onmessage = function (event) {
+		console.log(event.data);
+	}
+	//ws.send("foo")
+	//ws.send(JSON.stringify({username: "Sat"}))
+</script>
 </body>
 </html>
 {{end}}

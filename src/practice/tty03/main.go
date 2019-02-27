@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"time"
 
 	"context"
 	"os"
@@ -41,6 +42,13 @@ var upgrader = websocket.Upgrader{
 	},
 }
 
+
+type myStruct struct {
+	Username  string `json:"username"`
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+}
+
 func main() {
 
 	appName := "ROGUE"
@@ -57,6 +65,7 @@ func main() {
 	http.HandleFunc("/", foo)
 	http.HandleFunc("/tty", tty)
 	http.HandleFunc("/sockets", socketshandle)
+	http.HandleFunc("/v3/ws", v3ws)
 	http.Handle("/favicon.ico", http.NotFoundHandler())
 	http.ListenAndServe(":8081", nil)
 }
@@ -179,3 +188,20 @@ func socketshandle(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 }
+
+
+func v3ws(w http.ResponseWriter, r *http.Request) {
+	var conn, _ = upgrader.Upgrade(w, r, nil)
+	go func(conn *websocket.Conn) {
+		ch := time.Tick(5 * time.Second)
+
+		for range ch {
+			conn.WriteJSON(myStruct{
+				Username:  "mvansickle",
+				FirstName: "Michael",
+				LastName:  "Van Sickle",
+			})
+		}
+	}(conn)
+}
+
