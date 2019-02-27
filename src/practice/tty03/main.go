@@ -162,7 +162,6 @@ func tty(w http.ResponseWriter, req *http.Request) {
 		for {
 			err := <-errs
 			cancel()
-			fmt.Println("%T", err)
 			fmt.Println("<<--errs: ", err)
 			fmt.Println("----------")
 			fmt.Println("context err after Game end:\t", ctx.Err())
