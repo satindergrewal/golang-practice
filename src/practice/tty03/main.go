@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"time"
+	"math/rand"
 
 	"context"
 	"os"
@@ -167,6 +168,13 @@ func tty(w http.ResponseWriter, req *http.Request) {
 			fmt.Println("context err after Game end:\t", ctx.Err())
 			fmt.Printf("context type after Game end:\t%T\n", ctx)
 			fmt.Println("Goroutines after Game end\t", runtime.NumGoroutine())
+
+			c := fanIn(boring("Joe"), boring("Ann"))
+			for i := 0; i < 10; i++ {
+				fmt.Println(<-c)
+			}
+			fmt.Println("You're both boring; I'm leaving.")
+			
 			return
 		}
 	}()
@@ -238,3 +246,39 @@ func v3ws(w http.ResponseWriter, r *http.Request) {
 	}(conn)
 }
 
+
+
+/*
+code source:
+Rob Pike
+https://talks.golang.org/2012/concurrency.slide#25
+
+source:
+https://blog.golang.org/pipelines
+*/
+func boring(msg string) <-chan string {
+	c := make(chan string)
+	go func() {
+		for i := 0; ; i++ {
+			c <- fmt.Sprintf("%s %d", msg, i)
+			time.Sleep(time.Duration(rand.Intn(1e3)) * time.Millisecond)
+		}
+	}()
+	return c
+}
+
+// FAN IN
+func fanIn(input1, input2 <-chan string) <-chan string {
+	c := make(chan string)
+	go func() {
+		for {
+			c <- <-input1
+		}
+	}()
+	go func() {
+		for {
+			c <- <-input2
+		}
+	}()
+	return c
+}
