@@ -1,0 +1,18 @@
+{{template "header"}}
+
+<form action="/tty" method="POST">
+    <label for="cmd">Command</label>
+    <input type="text" id="command" name="cmd" value="/Users/satinder/jl777/kmdrogue/src/cc/rogue/rogue">
+    <br>
+    <label for="args">Arguments</label>
+    <input type="text" id="arguments" name="args" value="777 aaa">
+    <br>
+    <input type="submit">
+</form>
+
+<br>
+
+<h1>Command: {{.Command}}</h1>
+<h1>Arguments: {{.Arguments}}</h1>
+
+{{template "footer"}}
