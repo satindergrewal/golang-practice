@@ -64,16 +64,17 @@ func main() {
 	fmt.Println(d)
 
 	var cat hotcat
-	//mux := http.NewServeMux()
-	//mux.Handle("/cat", c)
+	cat = 1
+	mux := http.NewServeMux()
+	mux.Handle("/cat", cat)
 
 	http.HandleFunc("/", foo)
 	http.HandleFunc("/tty", tty)
-	http.Handle("/cat", cat)
+	//http.Handle("/cat", cat)
 	http.HandleFunc("/sockets", socketshandle)
 	http.HandleFunc("/v3/ws", v3ws)
 	http.Handle("/favicon.ico", http.NotFoundHandler())
-	http.ListenAndServe(":8081", nil)
+	http.ListenAndServe(":8081", mux)
 }
 
 func foo(w http.ResponseWriter, req *http.Request) {
@@ -256,6 +257,7 @@ func v3ws(w http.ResponseWriter, r *http.Request) {
 type hotcat int
 
 func (c hotcat) ServeHTTP(res http.ResponseWriter, req *http.Request) {
+	fmt.Println(c)
 	io.WriteString(res, "cat cat cat")
 }
 
