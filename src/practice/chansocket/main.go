@@ -4,13 +4,26 @@ import (
 	"io"
 	"net/http"
 	"fmt"
+	"math/rand"
+	//"sync"
+	"time"
 	"github.com/gorilla/websocket"
 )
+
+
+//func init() {
+	//messages := make(chan string)
+//}
 
 type hotcat int
 
 func (c hotcat) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	io.WriteString(res, "cat cat cat")
+	
+	//Some code here who's output I want to pass to websockets url ws://localhost:8080/ws
+	n := timeConsumingWork(4)
+	fmt.Println("Random Number Print from cat: ", n)
+	//Example the value of n I need to pass to ws://localhost:8080/ws, how can I do it?
 }
 
 var upgrader = websocket.Upgrader{
@@ -57,6 +70,10 @@ func ws(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	var c hotcat
+
+	//go func() { messages <- "ping" }()
+	//msg := <-messages
+	//fmt.Println(msg)
 	
 	http.Handle("/cat", c)
 	http.HandleFunc("/ws", ws)
@@ -65,3 +82,7 @@ func main() {
 }
 
 
+func timeConsumingWork(n int) int {
+	time.Sleep(time.Microsecond * time.Duration(rand.Intn(500)))
+	return n + rand.Intn(1000)
+}
