@@ -34,5 +34,4 @@ func main() {
 	// passing the same main body channel out to printer sends this value to printer function
 	// printer function just prints that channel value in it's printer function body
 	printer(out)
-
 }

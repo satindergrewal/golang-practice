@@ -5,15 +5,18 @@ import (
 	"net/http"
 	"fmt"
 	"math/rand"
-	//"sync"
+	"log"
 	"time"
 	"github.com/gorilla/websocket"
 )
 
 
-//func init() {
-	//messages := make(chan string)
-//}
+func logging(f http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		log.Println(r.URL.Path)
+		f(w, r)
+	}
+}
 
 type hotcat int
 
@@ -71,12 +74,8 @@ func ws(w http.ResponseWriter, r *http.Request) {
 func main() {
 	var c hotcat
 
-	//go func() { messages <- "ping" }()
-	//msg := <-messages
-	//fmt.Println(msg)
-	
 	http.Handle("/cat", c)
-	http.HandleFunc("/ws", ws)
+	http.HandleFunc("/ws", logging(ws))
 
 	http.ListenAndServe(":8080", nil)
 }
