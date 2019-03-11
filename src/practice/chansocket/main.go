@@ -14,6 +14,9 @@ import (
 func logging(f http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		log.Println(r.URL.Path)
+		if r.URL.Path == `/ws` {
+			log.Println("WebSocket is accessed from ws://localhost:8080/ws")
+		}
 		f(w, r)
 	}
 }
