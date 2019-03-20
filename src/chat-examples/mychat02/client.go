@@ -21,8 +21,8 @@ func (c *client) read() {
 		} else {
 			break
 		}
-		c.socket.Close()
 	}
+	c.socket.Close()
 }
 
 func (c *client) write() {
@@ -30,6 +30,6 @@ func (c *client) write() {
 		if err := c.socket.WriteMessage(websocket.TextMessage, msg); err != nil {
 			break
 		}
-		c.socket.Close()
 	}
+	c.socket.Close()
 }

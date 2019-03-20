@@ -60,15 +60,12 @@ const (
 	messageBufferSize = 256
 )
 
-var upgrader = &websocket.Upgrader{
-	ReadBufferSize:  socketBufferSize,
-	WriteBufferSize: messageBufferSize,
-}
+var upgrader = &websocket.Upgrader{ReadBufferSize: socketBufferSize, WriteBufferSize: socketBufferSize}
 
 func (r *room) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	socket, err := upgrader.Upgrade(w, req, nil)
 	if err != nil {
-		log.Fatal("ServeHTTP", err)
+		log.Fatal("ServeHTTP:", err)
 		return
 	}
 	client := &client{
