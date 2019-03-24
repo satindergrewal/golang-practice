@@ -6,10 +6,12 @@ import (
 	"goblueprints/chapter1/trace"
 	"html/template"
 	"log"
+	"math/rand"
 	"net/http"
 	"os"
 	"path/filepath"
 	"sync"
+	"time"
 )
 
 // templ represents a single template
@@ -26,6 +28,12 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	})
 	fmt.Println(r.Host)
 	t.templ.Execute(w, r)
+	go func() {
+		for i := 0; ; i++ {
+			time.Sleep(time.Duration(rand.Intn(2e3)) * time.Millisecond)
+			fmt.Println("Message to console from root ServeHTTP handle")
+		}
+	}()
 }
 
 func main() {
