@@ -12,8 +12,6 @@ import (
 	"path/filepath"
 	"sync"
 	"time"
-
-	"github.com/gorilla/websocket"
 )
 
 // templ represents a single template
@@ -30,7 +28,8 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	})
 	fmt.Println(r.Host)
 	t.templ.Execute(w, r)
-	var room *room
+
+	room := newRoom()
 	socket, _ := upgrader.Upgrade(w, r, nil)
 	client := &client{
 		socket: socket,
@@ -41,7 +40,8 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	go func() {
 		for i := 0; i < 10; i++ {
 			time.Sleep(time.Duration(rand.Intn(8e3)) * time.Millisecond)
-			client.socket.WriteMessage(websocket.TextMessage, []byte("Hello from / ServeHTTP Handle"))
+			room.forward <- []byte("Hello from / ServeHTTP Handle")
+			//client.socket.WriteMessage(websocket.TextMessage, []byte("Hello from / ServeHTTP Handle"))
 			//fmt.Println("Sending automatic hello from root ServeHTTP handle to web page!")
 		}
 	}()
