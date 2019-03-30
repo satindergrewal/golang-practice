@@ -32,9 +32,12 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(r.Host)
 	t.templ.Execute(w, r)
 
+	// Creating the URL scheme to use with websocket Dialer
+	// to connnect to ws://localhost:8080/room
 	u := url.URL{Scheme: "ws", Host: "localhost:8080", Path: "/room"}
 	log.Printf("connecting to %s", u.String())
 
+	// Initiate the websocket connection from the go code **as a client** to connect to the chat room
 	c, _, err := websocket.DefaultDialer.Dial(u.String(), nil)
 	if err != nil {
 		log.Fatal("dial:", err)
@@ -43,7 +46,11 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	go func() {
 		for i := 0; i < 10; i++ {
 			time.Sleep(time.Duration(rand.Intn(8e3)) * time.Millisecond)
-			log.Println("Sending automatic hello from root ServeHTTP handle to web page!")
+			// Just printing the log of the same message in command line. Might better to ignore it.
+			// log.Println("Sending automatic hello from root ServeHTTP handle to web page!")
+
+			// Write the Message as Text message to the web socket connection
+			// which will show up in the chat box
 			err := c.WriteMessage(websocket.TextMessage, []byte("Sending automatic hello from root ServeHTTP handle to web page!"))
 			if err != nil {
 				log.Println("write:", err)
