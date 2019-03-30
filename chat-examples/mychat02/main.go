@@ -8,10 +8,13 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
 	"sync"
 	"time"
+
+	"github.com/gorilla/websocket"
 )
 
 // templ represents a single template
@@ -29,20 +32,23 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(r.Host)
 	t.templ.Execute(w, r)
 
-	room := newRoom()
-	socket, _ := upgrader.Upgrade(w, r, nil)
-	client := &client{
-		socket: socket,
-		send:   make(chan []byte, messageBufferSize),
-		room:   room,
+	u := url.URL{Scheme: "ws", Host: "localhost:8080", Path: "/room"}
+	log.Printf("connecting to %s", u.String())
+
+	c, _, err := websocket.DefaultDialer.Dial(u.String(), nil)
+	if err != nil {
+		log.Fatal("dial:", err)
 	}
-	room.join <- client
+
 	go func() {
 		for i := 0; i < 10; i++ {
 			time.Sleep(time.Duration(rand.Intn(8e3)) * time.Millisecond)
-			room.forward <- []byte("Hello from / ServeHTTP Handle")
-			//client.socket.WriteMessage(websocket.TextMessage, []byte("Hello from / ServeHTTP Handle"))
-			//fmt.Println("Sending automatic hello from root ServeHTTP handle to web page!")
+			log.Println("Sending automatic hello from root ServeHTTP handle to web page!")
+			err := c.WriteMessage(websocket.TextMessage, []byte("Sending automatic hello from root ServeHTTP handle to web page!"))
+			if err != nil {
+				log.Println("write:", err)
+				return
+			}
 		}
 	}()
 }
