@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	enumpb "golang-practice/protobuf-example-go/src/enum_example"
 	simplepb "golang-practice/protobuf-example-go/src/simple"
 	"io/ioutil"
 	"log"
@@ -14,8 +15,21 @@ import (
 func main() {
 	sm := doSimple()
 
-	//readAndWriteDemo(sm)
+	readAndWriteDemo(sm)
 	jsonDemo(sm)
+
+	doEnum()
+}
+
+func doEnum() {
+	em := enumpb.EnumMessage{
+		Id:           42,
+		DayOfTheWeek: enumpb.DayOfTheWeek_THURSDAY,
+	}
+
+	em.DayOfTheWeek = enumpb.DayOfTheWeek_MONDAY
+
+	fmt.Println(em)
 }
 
 func jsonDemo(sm proto.Message) {
