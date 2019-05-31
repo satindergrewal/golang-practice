@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	addressbookpb "golang-practice/protobuf-example-go/src/AddressBook"
 	complexpb "golang-practice/protobuf-example-go/src/complex"
 	enumpb "golang-practice/protobuf-example-go/src/enum_example"
 	simplepb "golang-practice/protobuf-example-go/src/simple"
@@ -22,6 +23,61 @@ func main() {
 	doEnum()
 
 	doComplex()
+
+	doAddressBook()
+}
+
+func doAddressBook() {
+	p1 := addressbookpb.Person{
+		Id:    1234,
+		Name:  "John Doe",
+		Email: "jdoe@example.com",
+		Phones: []*addressbookpb.Person_PhoneNumber{
+			{Number: "555-4321", Type: addressbookpb.Person_HOME},
+		},
+	}
+
+	book := addressbookpb.AddressBook{People: []*addressbookpb.Person{
+		{
+			Name:  "John Doe",
+			Id:    101,
+			Email: "john@example.com",
+		},
+		{
+			Name: "Jane Doe",
+			Id:   102,
+		},
+		{
+			Name:  "Jack Doe",
+			Id:    201,
+			Email: "jack@example.com",
+			Phones: []*addressbookpb.Person_PhoneNumber{
+				{Number: "555-555-5555", Type: addressbookpb.Person_WORK},
+			},
+		},
+		{
+			Name:  "Jack Buck",
+			Id:    301,
+			Email: "buck@example.com",
+			Phones: []*addressbookpb.Person_PhoneNumber{
+				{Number: "555-555-0000", Type: addressbookpb.Person_HOME},
+				{Number: "555-555-0001", Type: addressbookpb.Person_MOBILE},
+				{Number: "555-555-0002", Type: addressbookpb.Person_WORK},
+			},
+		},
+		{
+			Name:  "Janet Doe",
+			Id:    1001,
+			Email: "janet@example.com",
+			Phones: []*addressbookpb.Person_PhoneNumber{
+				{Number: "555-777-0000"},
+				{Number: "555-777-0001", Type: addressbookpb.Person_HOME},
+			},
+		},
+	}}
+
+	fmt.Println(p1)
+	fmt.Println(book)
 }
 
 func doComplex() {
