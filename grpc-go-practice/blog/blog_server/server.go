@@ -137,15 +137,6 @@ func (*server) UpdateBlog(ctx context.Context, req *blogpb.UpdateBlogRequest) (*
 	}, nil
 }
 
-func dataToBlogPb(data *blogItem) *blogpb.Blog {
-	return &blogpb.Blog{
-		Id:       data.ID.Hex(),
-		AuthorId: data.AuthorID,
-		Content:  data.Content,
-		Title:    data.Title,
-	}
-}
-
 func (*server) DeleteBlog(ctx context.Context, req *blogpb.DeleteBlogRequest) (*blogpb.DeleteBlogResponse, error) {
 	fmt.Println("Delete blog request")
 	oid, err := primitive.ObjectIDFromHex(req.GetBlogId())
@@ -174,6 +165,37 @@ func (*server) DeleteBlog(ctx context.Context, req *blogpb.DeleteBlogRequest) (*
 	}
 
 	return &blogpb.DeleteBlogResponse{BlogId: req.GetBlogId()}, nil
+}
+
+func (*server) ListBlog(req *blogpb.ListBlogRequest, stream blogpb.BlogService_ListBlogServer) error {
+	fmt.Println("List blog request")
+
+	cur, err := collection.Find(context.Background(), bson.D{{}})
+	if err != nil {
+		return status.Errorf(
+			codes.Internal,
+			fmt.Sprintf("Unknown internal error: %v", err),
+		)
+	}
+	defer cur.Close(context.Background())
+	for cur.Next(context.Background()) {
+		data := &blogItem{}
+		err := cur.Decode(data)
+		if err != nil {
+			return status.Errorf(
+				codes.Internal,
+				fmt.Sprintf("Error while decoding data from MangoDB: %v", err),
+			)
+		}
+		stream.Send(&blogpb.ListBlogResponse{Blog: dataToBlogPb(data)})
+	}
+	if err := cur.Err(); err != nil {
+		return status.Errorf(
+			codes.Internal,
+			fmt.Sprintf("Error while decoding data from MangoDB: %v", err),
+		)
+	}
+	return nil
 }
 
 func main() {
@@ -225,4 +247,13 @@ func main() {
 	fmt.Println("Closing MongoDB Connection")
 	client.Disconnect(context.TODO())
 	fmt.Println("End of Program")
+}
+
+func dataToBlogPb(data *blogItem) *blogpb.Blog {
+	return &blogpb.Blog{
+		Id:       data.ID.Hex(),
+		AuthorId: data.AuthorID,
+		Content:  data.Content,
+		Title:    data.Title,
+	}
 }
