@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"regexp"
 	"strings"
 )
@@ -62,19 +63,26 @@ dpow_broadcast.(completed/e90dfe302ecda41454d33b1a1fdf1d5d07a00894888cecfe1870df
 
 // SwapStatus defines the data type to store filtered data and push to application in JSON format for UI side rendering.
 type SwapStatus struct {
-	State      string `json:"state,omitempty"`
-	StateID    string `json:"state_id,omitempty"`
-	Status     string `json:"status,omitempty"`
-	StateHash  string `json:"state_hash,omitempty"`
-	BaseTxID   string `json:"base_txid,omitempty"`
-	RelTxID    string `json:"rel_txid,omitempty"`
-	SwapID     string `json:"swap_id,omitempty"`
-	SendToAddr string `json:"sendtoaddr,omitempty"`
-	RecvAddr   string `json:"recvaddr,omitempty"`
-	Base       string `json:"base,omitempty"`
-	Rel        string `json:"rel,omitempty"`
-	BaseAmount string `json:"base_amount,omitempty"`
-	RelAmount  string `json:"rel_amount,omitempty"`
+	State      string  `json:"state,omitempty"`
+	StateID    string  `json:"state_id,omitempty"`
+	Status     string  `json:"status,omitempty"`
+	StateHash  string  `json:"state_hash,omitempty"`
+	BaseTxID   string  `json:"base_txid,omitempty"`
+	RelTxID    string  `json:"rel_txid,omitempty"`
+	SwapID     string  `json:"swap_id,omitempty"`
+	SendToAddr string  `json:"sendtoaddr,omitempty"`
+	RecvAddr   string  `json:"recvaddr,omitempty"`
+	Base       string  `json:"base,omitempty"`
+	Rel        string  `json:"rel,omitempty"`
+	BaseAmount float64 `json:"base_amount,omitempty"`
+	RelAmount  float64 `json:"rel_amount,omitempty"`
+}
+
+//ZFrom to render the JSON data from "from." log entery coming from subatomic stdout
+type ZFrom []struct {
+	Address string  `json:"address,omitempty"`
+	Amount  float64 `json:"amount,omitempty"`
+	Memo    string  `json:"memo,omitempty"`
 }
 
 func main() {
@@ -107,6 +115,7 @@ func main() {
 
 		// fmt.Println("State 0:", state0)
 		state0JSON, _ := json.Marshal(state0)
+		fmt.Println("Channel Opened")
 		fmt.Println("state0 JSON:", string(state0JSON))
 
 	} else {
@@ -135,6 +144,7 @@ func main() {
 
 		// fmt.Println("state 1:", state1)
 		state1JSON, _ := json.Marshal(state1)
+		fmt.Println("Channel Approved")
 		fmt.Println("state1 JSON:", string(state1JSON))
 	} else {
 		fmt.Printf("length of chAprovSf is lower: %d\n", len(chAprovSf))
@@ -169,8 +179,107 @@ func main() {
 
 		// fmt.Println("state 1:", state1)
 		state1JSON, _ := json.Marshal(state1)
+		fmt.Println("Channel Approval ID")
 		fmt.Println("state1 JSON:", string(state1JSON))
 	} else {
 		fmt.Printf("length of aprovIDSf is lower: %d\n", len(aprovIDSf))
+	}
+
+	fmt.Println(`----`)
+	var expIncCh = regexp.MustCompile(`(?m)incomingchannel.+$`)
+	incCh := expIncCh.FindString(logString)
+	// fmt.Println(incCh)
+	incChSf := strings.Fields(incCh)
+	// fmt.Println(incChSf)
+	if len(incChSf) > 0 {
+		// fmt.Printf("length of incChSf is greater: %d\n", len(incChSf))
+
+		// fmt.Println(incChSf[0])
+		incChStatus := strings.Split(incChSf[1], ".")
+		// fmt.Println(incChStatus[0])
+		// fmt.Println(incChStatus[1])
+
+		state2 := SwapStatus{
+			State:  incChSf[0],
+			Status: incChStatus[1],
+		}
+
+		// fmt.Println("state 1:", state2)
+		state2JSON, _ := json.Marshal(state2)
+		fmt.Println("Incoming Channel")
+		fmt.Println("state2 JSON:", string(state2JSON))
+	} else {
+		fmt.Printf("length of incChSf is lower: %d\n", len(incChSf))
+	}
+
+	fmt.Println(`----`)
+	var expGotTxID = regexp.MustCompile(`(?m)got txid.+$`)
+	TxID := expGotTxID.FindString(logString)
+	// fmt.Println(TxID)
+	TxIDSf := strings.Fields(TxID)
+	// fmt.Println(TxIDSf)
+	if len(TxIDSf) > 0 {
+		// fmt.Printf("length of TxIDSf is greater: %d\n", len(TxIDSf))
+
+		// fmt.Println(TxIDSf[0])
+		TxIDStatus := strings.Split(TxIDSf[1], ".")
+		// fmt.Println(TxIDStatus[0])
+		// fmt.Println(TxIDStatus[1])
+
+		state3 := SwapStatus{
+			State:    TxIDSf[0],
+			BaseTxID: TxIDStatus[1],
+			Status:   "3",
+		}
+
+		// fmt.Println("state 1:", state3)
+		state3JSON, _ := json.Marshal(state3)
+		fmt.Println("Recieved TxID")
+		fmt.Println("state3 JSON:", string(state3JSON))
+	} else {
+		fmt.Printf("length of TxIDSf is lower: %d\n", len(TxIDSf))
+	}
+
+	fmt.Println(`----`)
+	var expZFrom = regexp.MustCompile(`(?m)from..+$`)
+	zFrom := expZFrom.FindString(logString)
+	// fmt.Println(zFrom)
+	zFromSf := strings.Fields(zFrom)
+	// fmt.Println(zFromSf)
+
+	if len(zFromSf) > 0 {
+		// fmt.Printf("length of zFromSf is greater: %d\n", len(zFromSf))
+
+		// fmt.Println(zFromSf[0])
+		zFromSl := strings.Split(zFromSf[0], ".")
+		zFromAddr := strings.ReplaceAll(zFromSl[1], "(", "")
+		zFromAddr = strings.ReplaceAll(zFromAddr, ")", "")
+		// fmt.Println(zFromAddr)
+		// fmt.Println(zFromSf[2])
+		zFromJSON := strings.ReplaceAll(zFromSf[2], "'", "")
+		zFromJSON = strings.ReplaceAll(zFromJSON, "'", "")
+		// fmt.Printf("%s\n", zFromJSON)
+		var zj ZFrom
+		err := json.Unmarshal([]byte(zFromJSON), &zj)
+		if err != nil {
+			log.Println(err)
+		}
+		// fmt.Println(zj[0].Address)
+		// fmt.Println(zj[0].Amount)
+		// fmt.Println(zj[0].Memo)
+
+		state3 := SwapStatus{
+			State:      "Sending Z Transaction",
+			Status:     "3",
+			SendToAddr: zj[0].Address,
+			BaseAmount: zj[0].Amount,
+		}
+
+		// fmt.Println("state 1:", state3)
+		state3JSON, _ := json.Marshal(state3)
+		fmt.Println("Sending Z tx")
+		fmt.Println("state3 JSON:", string(state3JSON))
+	} else {
+		fmt.Printf("length of zFromSf is lower: %d\n", len(zFromSf))
 	}
 }
