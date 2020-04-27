@@ -12,7 +12,7 @@ import (
 // var logString string = ``
 
 // var logString string = `3013947264 openrequest.4195714048 -> (0133f63a3d4ae8db7e9efe8b8702e10ecc9ef44901dd2321c92132889bc6656b4e)`
-var logString string = `3013947264 iambob.0 (PIRATE/KMD) channelapproved origid.3013947264 status.1`
+// var logString string = `3013947264 iambob.0 (PIRATE/KMD) channelapproved origid.3013947264 status.1`
 
 // var logString string = `
 // rel.KMD/KMD  openrequest 3013947264 status.0 (RBthCSgNLE3rwvAKce8JNSo7xDpxQEiRTX/zs1zqks0tergf6nk69evm6awte4xmhf2fd9epnv946vzlhfxztkls6a9lyfmuafda00krvkvj0xagp)
@@ -38,29 +38,29 @@ var logString string = `3013947264 iambob.0 (PIRATE/KMD) channelapproved origid.
 // dpow_broadcast.(completed/4a1e6502c5434f0c9abbce3c73f5bfb88c71dc1d2ceb2a0669168e31c6d7ef8b) [ ] 4a1e6502c5434f0c9abbce3c73f5bfb88c71dc1d2ceb2a0669168e31c6d7ef8b error.(-1)
 // `
 
-// var logString string = `
-// rel.PIRATE/PIRATE  openrequest 4105997824 status.0 (RBthCSgNLE3rwvAKce8JNSo7xDpxQEiRTX/zs1zqks0tergf6nk69evm6awte4xmhf2fd9epnv946vzlhfxztkls6a9lyfmuafda00krvkvj0xagp)
-// 4105997824 openrequest.3128973312 -> (0133f63a3d4ae8db7e9efe8b8702e10ecc9ef44901dd2321c92132889bc6656b4e)
-// 4105997824 iambob.0 (KMD/PIRATE) channelapproved origid.4105997824 status.1
-// 4105997824 approvalid.682507392 (0133f63a3d4ae8db7e9efe8b8702e10ecc9ef44901dd2321c92132889bc6656b4e)
-// 4105997824 iambob.0 (KMD/PIRATE) incomingchannel status.2
-// z_sendmany.( PIRATE) from.(zs1zqks0tergf6nk69evm6awte4xmhf2fd9epnv946vzlhfxztkls6a9lyfmuafda00krvkvj0xagp) -> '[{"address":"zs1wq40g4wvrzc2eq9xw7wtstshgar68ash659eq20ellm5jeqsyfwe5qs3tex9l3mjnrj2yf34hw0","amount":1.50000000,"memo":"3431303539393738323420"}]'
-// 4105997824: 1.50000000 PIRATE -> zs1wq40g4wvrzc2eq9xw7wtstshgar68ash659eq20ellm5jeqsyfwe5qs3tex9l3mjnrj2yf34hw0, paymentid[0] 576533696
-// 4105997824 iambob.0 (KMD/PIRATE) incomingpayment status.4
-// 4105997824 alice waits for KMD.a2e484460c6c0e003ead566072f23cda5b746dc443e6ec0268d89d773e25bc1a to be in mempool (0.10000000 -> RBthCSgNLE3rwvAKce8JNSo7xDpxQEiRTX)
-// RBthCSgNLE3rwvAKce8JNSo7xDpxQEiRTX received 0.10000000 vs 0.10000000
-// 4105997824 SWAP COMPLETE <<<<<<<<<<<<<<<<
-// 4105997824 paidid.2056384576
-// 4105997824 iambob.0 (KMD/PIRATE) incomingfullypaid status.5
-// 4105997824 closedid.1230418208
-// 4105997824 iambob.0 (KMD/PIRATE) incomingclose status.6
-// alice 4105997824 150000000 3128973312 finished
-// subatomic_channel_alice (PIRATE/PIRATE) 4105997824 4105997824 with 1.50000000 150000000
-// initialized 42 messages, updated 151 out of total.151
-// start subatomic_loop iambob.0 KMD -> PIRATE, 4105997824 150000000 3128973312
-// z_sendmany.() -> opid.(opid-a8124036-d646-45d2-9639-731e363d480f)
-// dpow_broadcast.(completed/e90dfe302ecda41454d33b1a1fdf1d5d07a00894888cecfe1870df8a541e1f72) [ ] e90dfe302ecda41454d33b1a1fdf1d5d07a00894888cecfe1870df8a541e1f72 error.(-1)
-// `
+var logString string = `
+rel.PIRATE/PIRATE  openrequest 4105997824 status.0 (RBthCSgNLE3rwvAKce8JNSo7xDpxQEiRTX/zs1zqks0tergf6nk69evm6awte4xmhf2fd9epnv946vzlhfxztkls6a9lyfmuafda00krvkvj0xagp)
+4105997824 openrequest.3128973312 -> (0133f63a3d4ae8db7e9efe8b8702e10ecc9ef44901dd2321c92132889bc6656b4e)
+4105997824 iambob.0 (KMD/PIRATE) channelapproved origid.4105997824 status.1
+4105997824 approvalid.682507392 (0133f63a3d4ae8db7e9efe8b8702e10ecc9ef44901dd2321c92132889bc6656b4e)
+4105997824 iambob.0 (KMD/PIRATE) incomingchannel status.2
+z_sendmany.( PIRATE) from.(zs1zqks0tergf6nk69evm6awte4xmhf2fd9epnv946vzlhfxztkls6a9lyfmuafda00krvkvj0xagp) -> '[{"address":"zs1wq40g4wvrzc2eq9xw7wtstshgar68ash659eq20ellm5jeqsyfwe5qs3tex9l3mjnrj2yf34hw0","amount":1.50000000,"memo":"3431303539393738323420"}]'
+4105997824: 1.50000000 PIRATE -> zs1wq40g4wvrzc2eq9xw7wtstshgar68ash659eq20ellm5jeqsyfwe5qs3tex9l3mjnrj2yf34hw0, paymentid[0] 576533696
+4105997824 iambob.0 (KMD/PIRATE) incomingpayment status.4
+4105997824 alice waits for KMD.a2e484460c6c0e003ead566072f23cda5b746dc443e6ec0268d89d773e25bc1a to be in mempool (0.10000000 -> RBthCSgNLE3rwvAKce8JNSo7xDpxQEiRTX)
+RBthCSgNLE3rwvAKce8JNSo7xDpxQEiRTX received 0.10000000 vs 0.10000000
+4105997824 SWAP COMPLETE <<<<<<<<<<<<<<<<
+4105997824 paidid.2056384576
+4105997824 iambob.0 (KMD/PIRATE) incomingfullypaid status.5
+4105997824 closedid.1230418208
+4105997824 iambob.0 (KMD/PIRATE) incomingclose status.6
+alice 4105997824 150000000 3128973312 finished
+subatomic_channel_alice (PIRATE/PIRATE) 4105997824 4105997824 with 1.50000000 150000000
+initialized 42 messages, updated 151 out of total.151
+start subatomic_loop iambob.0 KMD -> PIRATE, 4105997824 150000000 3128973312
+z_sendmany.() -> opid.(opid-a8124036-d646-45d2-9639-731e363d480f)
+dpow_broadcast.(completed/e90dfe302ecda41454d33b1a1fdf1d5d07a00894888cecfe1870df8a541e1f72) [ ] e90dfe302ecda41454d33b1a1fdf1d5d07a00894888cecfe1870df8a541e1f72 error.(-1)
+`
 
 // SwapStatus defines the data type to store filtered data and push to application in JSON format for UI side rendering.
 type SwapStatus struct {
@@ -122,8 +122,8 @@ func SwapLogFilter(logString string) string {
 		// fmt.Println("State 0:", state0)
 		state0JSON, _ := json.Marshal(state0)
 		// fmt.Println("Channel Opened")
-		// fmt.Println("state0 JSON:", string(state0JSON))
-		return string(state0JSON)
+		fmt.Println("state0 JSON:", string(state0JSON))
+		// return string(state0JSON)
 
 	} else {
 		// fmt.Printf("length of openReqSf is lower: %d\n", len(openReqSf))
@@ -152,8 +152,8 @@ func SwapLogFilter(logString string) string {
 		// fmt.Println("state 1:", state1)
 		state1JSON, _ := json.Marshal(state1)
 		// fmt.Println("Channel Approved")
-		// fmt.Println("state1 JSON:", string(state1JSON))
-		return string(state1JSON)
+		fmt.Println("state1 JSON:", string(state1JSON))
+		// return string(state1JSON)
 	} else {
 		// fmt.Printf("length of chAprovSf is lower: %d\n", len(chAprovSf))
 	}
@@ -188,8 +188,8 @@ func SwapLogFilter(logString string) string {
 		// fmt.Println("state 1:", state1)
 		state1JSON, _ := json.Marshal(state1)
 		// fmt.Println("Channel Approval ID")
-		// fmt.Println("state1 JSON:", string(state1JSON))
-		return string(state1JSON)
+		fmt.Println("state1 JSON:", string(state1JSON))
+		// return string(state1JSON)
 	} else {
 		// fmt.Printf("length of aprovIDSf is lower: %d\n", len(aprovIDSf))
 	}
@@ -216,8 +216,8 @@ func SwapLogFilter(logString string) string {
 		// fmt.Println("state 1:", state2)
 		state2JSON, _ := json.Marshal(state2)
 		// fmt.Println("Incoming Channel")
-		// fmt.Println("state2 JSON:", string(state2JSON))
-		return string(state2JSON)
+		fmt.Println("state2 JSON:", string(state2JSON))
+		// return string(state2JSON)
 	} else {
 		// fmt.Printf("length of incChSf is lower: %d\n", len(incChSf))
 	}
@@ -245,8 +245,8 @@ func SwapLogFilter(logString string) string {
 		// fmt.Println("state 1:", state3)
 		state3JSON, _ := json.Marshal(state3)
 		// fmt.Println("Sending TxID")
-		// fmt.Println("state3 JSON:", string(state3JSON))
-		return string(state3JSON)
+		fmt.Println("state3 JSON:", string(state3JSON))
+		// return string(state3JSON)
 	} else {
 		// fmt.Printf("length of TxIDSf is lower: %d\n", len(TxIDSf))
 	}
@@ -289,8 +289,8 @@ func SwapLogFilter(logString string) string {
 		// fmt.Println("state 1:", state3)
 		state3JSON, _ := json.Marshal(state3)
 		// fmt.Println("Sending Z tx")
-		// fmt.Println("state3 JSON:", string(state3JSON))
-		return string(state3JSON)
+		fmt.Println("state3 JSON:", string(state3JSON))
+		// return string(state3JSON)
 	} else {
 		// fmt.Printf("length of zFromSf is lower: %d\n", len(zFromSf))
 	}
@@ -317,8 +317,8 @@ func SwapLogFilter(logString string) string {
 		// fmt.Println("state 1:", state4)
 		state4JSON, _ := json.Marshal(state4)
 		// fmt.Println("Incoming Payment")
-		// fmt.Println("state4 JSON:", string(state4JSON))
-		return string(state4JSON)
+		fmt.Println("state4 JSON:", string(state4JSON))
+		// return string(state4JSON)
 	} else {
 		// fmt.Printf("length of incPaySf is lower: %d\n", len(incPaySf))
 	}
@@ -357,8 +357,8 @@ func SwapLogFilter(logString string) string {
 		// fmt.Println("state 1:", state4)
 		state4JSON, _ := json.Marshal(state4)
 		// fmt.Println("Alice Waiting Payment")
-		// fmt.Println("state4 JSON:", string(state4JSON))
-		return string(state4JSON)
+		fmt.Println("state4 JSON:", string(state4JSON))
+		// return string(state4JSON)
 	} else {
 		// fmt.Printf("length of aliceWaitSf is lower: %d\n", len(aliceWaitSf))
 	}
@@ -384,8 +384,8 @@ func SwapLogFilter(logString string) string {
 		// fmt.Println("state 1:", state4)
 		state4JSON, _ := json.Marshal(state4)
 		// fmt.Println("Alice Received Payment")
-		// fmt.Println("state4 JSON:", string(state4JSON))
-		return string(state4JSON)
+		fmt.Println("state4 JSON:", string(state4JSON))
+		// return string(state4JSON)
 	} else {
 		// fmt.Printf("length of aliceRcvdSf is lower: %d\n", len(aliceRcvdSf))
 	}
@@ -408,10 +408,87 @@ func SwapLogFilter(logString string) string {
 
 		state4JSON, _ := json.Marshal(state4)
 		// fmt.Println("SWAP COMPLETE")
-		// fmt.Println("state4 JSON:", string(state4JSON))
-		return string(state4JSON)
+		fmt.Println("state4 JSON:", string(state4JSON))
+		// return string(state4JSON)
 	} else {
 		// fmt.Printf("length of swpComplSf is lower: %d\n", len(swpComplSf))
+	}
+
+	// fmt.Println(`----`)
+	var expIncPaid = regexp.MustCompile(`(?m)incomingfullypaid.+$`)
+	incPaid := expIncPaid.FindString(logString)
+	// fmt.Println(incPaid)
+	incPaidSf := strings.Fields(incPaid)
+	// fmt.Println(incPaidSf)
+	if len(incPaidSf) > 0 {
+
+		// fmt.Println(incPaidSf[0])
+		// fmt.Println(incPaidSf[1])
+		incPaidStatus := strings.Split(incPaidSf[1], ".")
+		// fmt.Println(incPaidStatus[1])
+
+		state5 := SwapStatus{
+			State:  incPaidSf[0],
+			Status: incPaidStatus[1],
+		}
+
+		state5JSON, _ := json.Marshal(state5)
+		// fmt.Println("SWAP COMPLETE")
+		fmt.Println("state5 JSON:", string(state5JSON))
+		// return string(state5JSON)
+	} else {
+		// fmt.Printf("length of incPaidSf is lower: %d\n", len(incPaidSf))
+	}
+
+	// fmt.Println(`----`)
+	var expIncClose = regexp.MustCompile(`(?m)incomingclose.+$`)
+	incClose := expIncClose.FindString(logString)
+	// fmt.Println(incClose)
+	incCloseSf := strings.Fields(incClose)
+	// fmt.Println(incCloseSf)
+	if len(incCloseSf) > 0 {
+
+		// fmt.Println(incCloseSf[0])
+		// fmt.Println(incCloseSf[1])
+		incCloseStatus := strings.Split(incCloseSf[1], ".")
+		// fmt.Println(incCloseStatus[1])
+
+		state6 := SwapStatus{
+			State:  incCloseSf[0],
+			Status: incCloseStatus[1],
+		}
+
+		state6JSON, _ := json.Marshal(state6)
+		// fmt.Println("SWAP COMPLETE")
+		fmt.Println("state6 JSON:", string(state6JSON))
+		// return string(state6JSON)
+	} else {
+		// fmt.Printf("length of incCloseSf is lower: %d\n", len(incCloseSf))
+	}
+
+	// fmt.Println(`----`)
+	var expDpow = regexp.MustCompile(`(?m)dpow_broadcast.+$`)
+	dPowBcast := expDpow.FindString(logString)
+	// fmt.Println(dPowBcast)
+	dPowBcastSf := strings.Fields(dPowBcast)
+	// fmt.Println(dPowBcastSf)
+	if len(dPowBcastSf) > 0 {
+
+		// fmt.Println(dPowBcastSf[0])
+		// fmt.Println(dPowBcastSf[3])
+
+		state6 := SwapStatus{
+			State:    "dpow_broadcast",
+			Status:   "6",
+			BaseTxID: dPowBcastSf[3],
+		}
+
+		state6JSON, _ := json.Marshal(state6)
+		// fmt.Println("SWAP COMPLETE")
+		fmt.Println("state6 JSON:", string(state6JSON))
+		// return string(state6JSON)
+	} else {
+		// fmt.Printf("length of dPowBcastSf is lower: %d\n", len(dPowBcastSf))
 	}
 
 	return ""
