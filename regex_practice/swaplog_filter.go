@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"regexp"
+	"strconv"
 	"strings"
 )
 
@@ -234,7 +235,7 @@ func main() {
 
 		// fmt.Println("state 1:", state3)
 		state3JSON, _ := json.Marshal(state3)
-		fmt.Println("Recieved TxID")
+		fmt.Println("Sending TxID")
 		fmt.Println("state3 JSON:", string(state3JSON))
 	} else {
 		fmt.Printf("length of TxIDSf is lower: %d\n", len(TxIDSf))
@@ -282,4 +283,120 @@ func main() {
 	} else {
 		fmt.Printf("length of zFromSf is lower: %d\n", len(zFromSf))
 	}
+
+	fmt.Println(`----`)
+	var expIncPay = regexp.MustCompile(`(?m)incomingpayment.+$`)
+	incPay := expIncPay.FindString(logString)
+	// fmt.Println(incPay)
+	incPaySf := strings.Fields(incPay)
+	// fmt.Println(incPaySf)
+	if len(incPaySf) > 0 {
+		// fmt.Printf("length of incPaySf is greater: %d\n", len(incPaySf))
+
+		// fmt.Println(incPaySf[0])
+		incPayStatus := strings.Split(incPaySf[1], ".")
+		// fmt.Println(incPayStatus[0])
+		// fmt.Println(incPayStatus[1])
+
+		state4 := SwapStatus{
+			State:  incPaySf[0],
+			Status: incPayStatus[1],
+		}
+
+		// fmt.Println("state 1:", state4)
+		state4JSON, _ := json.Marshal(state4)
+		fmt.Println("Incoming Payment")
+		fmt.Println("state4 JSON:", string(state4JSON))
+	} else {
+		fmt.Printf("length of incPaySf is lower: %d\n", len(incPaySf))
+	}
+
+	fmt.Println(`----`)
+	var expAliceWait = regexp.MustCompile(`(?m)alice waits.+$`)
+	aliceWait := expAliceWait.FindString(logString)
+	// fmt.Println(aliceWait)
+	aliceWaitSf := strings.Fields(aliceWait)
+	// fmt.Println(aliceWaitSf)
+	if len(aliceWaitSf) > 0 {
+		// fmt.Printf("length of aliceWaitSf is greater: %d\n", len(aliceWaitSf))
+
+		// fmt.Println(aliceWaitSf[3])
+		aliceWaitTxID := strings.Split(aliceWaitSf[3], ".")
+		// fmt.Println(aliceWaitTxID[0])
+		// fmt.Println(aliceWaitTxID[1])
+
+		// fmt.Println(aliceWaitSf[8])
+		rcvAmount := strings.ReplaceAll(aliceWaitSf[8], "(", "")
+		// fmt.Println(rcvAmount)
+		// fmt.Println(aliceWaitSf[10])
+		rcvAddr := strings.ReplaceAll(aliceWaitSf[10], ")", "")
+		// fmt.Println(rcvAddr)
+		rcvAmountflt, _ := strconv.ParseFloat(rcvAmount, 64)
+
+		state4 := SwapStatus{
+			State:     "incomingpayment",
+			Status:    "4",
+			RelAmount: rcvAmountflt,
+			RelTxID:   aliceWaitTxID[1],
+			Rel:       aliceWaitTxID[0],
+			RecvAddr:  rcvAddr,
+		}
+
+		// fmt.Println("state 1:", state4)
+		state4JSON, _ := json.Marshal(state4)
+		fmt.Println("Alice Waiting Payment")
+		fmt.Println("state4 JSON:", string(state4JSON))
+	} else {
+		fmt.Printf("length of aliceWaitSf is lower: %d\n", len(aliceWaitSf))
+	}
+
+	fmt.Println(`----`)
+	var expAliceRcvd = regexp.MustCompile(`(?m)received.+$`)
+	aliceRcvd := expAliceRcvd.FindString(logString)
+	// fmt.Println(aliceRcvd)
+	aliceRcvdSf := strings.Fields(aliceRcvd)
+	// fmt.Println(aliceRcvdSf)
+	if len(aliceRcvdSf) > 0 {
+
+		// fmt.Println(aliceRcvdSf[1])
+		// fmt.Println(aliceRcvdSf[3])
+		rcvAmountflt, _ := strconv.ParseFloat(aliceRcvdSf[1], 64)
+
+		state4 := SwapStatus{
+			State:     aliceRcvdSf[0],
+			Status:    "4",
+			RelAmount: rcvAmountflt,
+		}
+
+		// fmt.Println("state 1:", state4)
+		state4JSON, _ := json.Marshal(state4)
+		fmt.Println("Alice Received Payment")
+		fmt.Println("state4 JSON:", string(state4JSON))
+	} else {
+		fmt.Printf("length of aliceRcvdSf is lower: %d\n", len(aliceRcvdSf))
+	}
+
+	fmt.Println(`----`)
+	var expSwpCompl = regexp.MustCompile(`(?m)SWAP COMPLETE.+$`)
+	swpCompl := expSwpCompl.FindString(logString)
+	// fmt.Println(swpCompl)
+	swpComplSf := strings.Fields(swpCompl)
+	// fmt.Println(swpComplSf)
+	if len(swpComplSf) > 0 {
+
+		// fmt.Println(swpComplSf[0])
+		// fmt.Println(swpComplSf[1])
+
+		state4 := SwapStatus{
+			State:  swpComplSf[0] + string(' ') + swpComplSf[1],
+			Status: "4",
+		}
+
+		state4JSON, _ := json.Marshal(state4)
+		fmt.Println("SWAP COMPLETE")
+		fmt.Println("state4 JSON:", string(state4JSON))
+	} else {
+		fmt.Printf("length of swpComplSf is lower: %d\n", len(swpComplSf))
+	}
+
 }
