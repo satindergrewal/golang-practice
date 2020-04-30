@@ -38,28 +38,51 @@ import (
 // dpow_broadcast.(completed/4a1e6502c5434f0c9abbce3c73f5bfb88c71dc1d2ceb2a0669168e31c6d7ef8b) [ ] 4a1e6502c5434f0c9abbce3c73f5bfb88c71dc1d2ceb2a0669168e31c6d7ef8b error.(-1)
 // `
 
+// var logString string = `
+// rel.PIRATE/PIRATE  openrequest 4105997824 status.0 (RBthCSgNLE3rwvAKce8JNSo7xDpxQEiRTX/zs1zqks0tergf6nk69evm6awte4xmhf2fd9epnv946vzlhfxztkls6a9lyfmuafda00krvkvj0xagp)
+// 4105997824 openrequest.3128973312 -> (0133f63a3d4ae8db7e9efe8b8702e10ecc9ef44901dd2321c92132889bc6656b4e)
+// 4105997824 iambob.0 (KMD/PIRATE) channelapproved origid.4105997824 status.1
+// 4105997824 approvalid.682507392 (0133f63a3d4ae8db7e9efe8b8702e10ecc9ef44901dd2321c92132889bc6656b4e)
+// 4105997824 iambob.0 (KMD/PIRATE) incomingchannel status.2
+// z_sendmany.( PIRATE) from.(zs1zqks0tergf6nk69evm6awte4xmhf2fd9epnv946vzlhfxztkls6a9lyfmuafda00krvkvj0xagp) -> '[{"address":"zs1wq40g4wvrzc2eq9xw7wtstshgar68ash659eq20ellm5jeqsyfwe5qs3tex9l3mjnrj2yf34hw0","amount":1.50000000,"memo":"3431303539393738323420"}]'
+// 4105997824: 1.50000000 PIRATE -> zs1wq40g4wvrzc2eq9xw7wtstshgar68ash659eq20ellm5jeqsyfwe5qs3tex9l3mjnrj2yf34hw0, paymentid[0] 576533696
+// 4105997824 iambob.0 (KMD/PIRATE) incomingpayment status.4
+// 4105997824 alice waits for KMD.a2e484460c6c0e003ead566072f23cda5b746dc443e6ec0268d89d773e25bc1a to be in mempool (0.10000000 -> RBthCSgNLE3rwvAKce8JNSo7xDpxQEiRTX)
+// RBthCSgNLE3rwvAKce8JNSo7xDpxQEiRTX received 0.10000000 vs 0.10000000
+// 4105997824 SWAP COMPLETE <<<<<<<<<<<<<<<<
+// 4105997824 paidid.2056384576
+// 4105997824 iambob.0 (KMD/PIRATE) incomingfullypaid status.5
+// 4105997824 closedid.1230418208
+// 4105997824 iambob.0 (KMD/PIRATE) incomingclose status.6
+// alice 4105997824 150000000 3128973312 finished
+// subatomic_channel_alice (PIRATE/PIRATE) 4105997824 4105997824 with 1.50000000 150000000
+// initialized 42 messages, updated 151 out of total.151
+// start subatomic_loop iambob.0 KMD -> PIRATE, 4105997824 150000000 3128973312
+// z_sendmany.() -> opid.(opid-a8124036-d646-45d2-9639-731e363d480f)
+// dpow_broadcast.(completed/e90dfe302ecda41454d33b1a1fdf1d5d07a00894888cecfe1870df8a541e1f72) [ ] e90dfe302ecda41454d33b1a1fdf1d5d07a00894888cecfe1870df8a541e1f72 error.(-1)
+// `
+
 var logString string = `
-rel.PIRATE/PIRATE  openrequest 4105997824 status.0 (RBthCSgNLE3rwvAKce8JNSo7xDpxQEiRTX/zs1zqks0tergf6nk69evm6awte4xmhf2fd9epnv946vzlhfxztkls6a9lyfmuafda00krvkvj0xagp)
-4105997824 openrequest.3128973312 -> (0133f63a3d4ae8db7e9efe8b8702e10ecc9ef44901dd2321c92132889bc6656b4e)
-4105997824 iambob.0 (KMD/PIRATE) channelapproved origid.4105997824 status.1
-4105997824 approvalid.682507392 (0133f63a3d4ae8db7e9efe8b8702e10ecc9ef44901dd2321c92132889bc6656b4e)
-4105997824 iambob.0 (KMD/PIRATE) incomingchannel status.2
-z_sendmany.( PIRATE) from.(zs1zqks0tergf6nk69evm6awte4xmhf2fd9epnv946vzlhfxztkls6a9lyfmuafda00krvkvj0xagp) -> '[{"address":"zs1wq40g4wvrzc2eq9xw7wtstshgar68ash659eq20ellm5jeqsyfwe5qs3tex9l3mjnrj2yf34hw0","amount":1.50000000,"memo":"3431303539393738323420"}]'
-4105997824: 1.50000000 PIRATE -> zs1wq40g4wvrzc2eq9xw7wtstshgar68ash659eq20ellm5jeqsyfwe5qs3tex9l3mjnrj2yf34hw0, paymentid[0] 576533696
-4105997824 iambob.0 (KMD/PIRATE) incomingpayment status.4
-4105997824 alice waits for KMD.a2e484460c6c0e003ead566072f23cda5b746dc443e6ec0268d89d773e25bc1a to be in mempool (0.10000000 -> RBthCSgNLE3rwvAKce8JNSo7xDpxQEiRTX)
-RBthCSgNLE3rwvAKce8JNSo7xDpxQEiRTX received 0.10000000 vs 0.10000000
-4105997824 SWAP COMPLETE <<<<<<<<<<<<<<<<
-4105997824 paidid.2056384576
-4105997824 iambob.0 (KMD/PIRATE) incomingfullypaid status.5
-4105997824 closedid.1230418208
-4105997824 iambob.0 (KMD/PIRATE) incomingclose status.6
-alice 4105997824 150000000 3128973312 finished
-subatomic_channel_alice (PIRATE/PIRATE) 4105997824 4105997824 with 1.50000000 150000000
-initialized 42 messages, updated 151 out of total.151
-start subatomic_loop iambob.0 KMD -> PIRATE, 4105997824 150000000 3128973312
-z_sendmany.() -> opid.(opid-a8124036-d646-45d2-9639-731e363d480f)
-dpow_broadcast.(completed/e90dfe302ecda41454d33b1a1fdf1d5d07a00894888cecfe1870df8a541e1f72) [ ] e90dfe302ecda41454d33b1a1fdf1d5d07a00894888cecfe1870df8a541e1f72 error.(-1)
+rel.PIRATE/PIRATE  openrequest 3898708736 status.0 (RBthCSgNLE3rwvAKce8JNSo7xDpxQEiRTX/zs1zqks0tergf6nk69evm6awte4xmhf2fd9epnv946vzlhfxztkls6a9lyfmuafda00krvkvj0xagp)
+3898708736 openrequest.1121685088 -> (0133f63a3d4ae8db7e9efe8b8702e10ecc9ef44901dd2321c92132889bc6656b4e)
+3898708736 iambob.0 (zVRSC/PIRATE) channelapproved origid.3898708736 status.1
+3898708736 approvalid.2896127552 (0133f63a3d4ae8db7e9efe8b8702e10ecc9ef44901dd2321c92132889bc6656b4e)
+3898708736 iambob.0 (zVRSC/PIRATE) incomingchannel status.2
+z_sendmany.( PIRATE) from.(zs1zqks0tergf6nk69evm6awte4xmhf2fd9epnv946vzlhfxztkls6a9lyfmuafda00krvkvj0xagp) -> '[{"address":"zs1wq40g4wvrzc2eq9xw7wtstshgar68ash659eq20ellm5jeqsyfwe5qs3tex9l3mjnrj2yf34hw0","amount":1.14999999,"memo":"3338393837303837333620"}]'
+3898708736: 1.14999999 PIRATE -> zs1wq40g4wvrzc2eq9xw7wtstshgar68ash659eq20ellm5jeqsyfwe5qs3tex9l3mjnrj2yf34hw0, paymentid[0] 1165267520
+3898708736 iambob.0 (zVRSC/PIRATE) incomingpayment status.4
+3898708736 alice waits for zVRSC.6bbb775ea9c089839da4b58b1bca159019e9e7307e848e29d3aa3dc3cece14bb to be in mempool (0.22999999 -> zs1zqks0tergf6nk69evm6awte4xmhf2fd9epnv946vzlhfxztkls6a9lyfmuafda00krvkvj0xagp)
+zs1zqks0tergf6nk69evm6awte4xmhf2fd9epnv946vzlhfxztkls6a9lyfmuafda00krvkvj0xagp received 0.22999999 vs 0.22999999
+3898708736 SWAP COMPLETE <<<<<<<<<<<<<<<<
+3898708736 paidid.3456812096
+3898708736 iambob.0 (zVRSC/PIRATE) incomingfullypaid status.5
+3898708736 closedid.174421568
+3898708736 iambob.0 (zVRSC/PIRATE) incomingclose status.6
+alice 3898708736 114999999 1121685088 finished
+subatomic_channel_alice (PIRATE/PIRATE) 3898708736 3898708736 with 1.15000000 114999999
+initialized 77 messages, updated 287 out of total.292
+start subatomic_loop iambob.0 zVRSC -> PIRATE, 3898708736 114999999 1121685088
+z_sendmany.() -> opid.(opid-d0151afd-22f4-4e82-9a71-e8ed455c68cd)
 `
 
 // SwapStatus defines the data type to store filtered data and push to application in JSON format for UI side rendering.
@@ -464,6 +487,43 @@ func SwapLogFilter(logString string) string {
 		// return string(state6JSON)
 	} else {
 		// fmt.Printf("length of incCloseSf is lower: %d\n", len(incCloseSf))
+	}
+
+	var expCoinBase = regexp.MustCompile(`(?m)z_sendmany.+$`)
+	coinBase := expCoinBase.FindString(logString)
+	fmt.Println(coinBase)
+	coinBaseSf := strings.Fields(coinBase)
+	fmt.Println(coinBaseSf[1])
+	coinBaseRa := strings.ReplaceAll(coinBaseSf[1], ")", "")
+	fmt.Println(coinBaseRa)
+
+	// fmt.Println(`----`)
+	var expOpid = regexp.MustCompile(`(?m)opid..+$`)
+	opID := expOpid.FindString(logString)
+	// fmt.Println(opID)
+	opIDSf := strings.Fields(opID)
+	// fmt.Println(opIDSf[0])
+
+	if len(opIDSf) > 0 {
+
+		opIDSs := strings.Split(opIDSf[0], ".")
+		// fmt.Println(opIDSs[1])
+		opIDRa := strings.ReplaceAll(opIDSs[1], "(", "")
+		opIDRa = strings.ReplaceAll(opIDRa, ")", "")
+		fmt.Println(opIDRa)
+
+		state6 := SwapStatus{
+			State:    "opid",
+			Status:   "6",
+			BaseTxID: opIDRa,
+		}
+
+		state6JSON, _ := json.Marshal(state6)
+		// fmt.Println("SWAP COMPLETE")
+		fmt.Println("state6 JSON:", string(state6JSON))
+		// return string(state6JSON)
+	} else {
+		// fmt.Printf("length of opIDSf is lower: %d\n", len(opIDSf))
 	}
 
 	// fmt.Println(`----`)
