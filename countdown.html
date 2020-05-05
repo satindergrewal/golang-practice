@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+  </head>
+  <body>
+    <div class="card card-order card-1212" data-orderid="1212">
+      1212: <p class="timestamp" data-timestamp="1588651008">1588651008</p>
+    </div>
+    <div class="card card-order card-12133" data-orderid="12133">
+      12133: <p class="timestamp" data-timestamp="1588651191">1588651191</p>
+    </div>
+    <div class="card card-order card-12137" data-orderid="12137">
+      12137: <p class="timestamp" data-timestamp="1588651375">1588651375</p>
+    </div>
+    
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      
+      // countdown for orders
+      let interval = 1000;
+      let cdInterval = setInterval(function(){
+        let timestamp_el = $('.timestamp')
+        let ordercards = $('.card-order')
+        for (i = 0; i < timestamp_el.length; i++) {
+          let cardorder = $(ordercards).eq(i).data('orderid');
+          let timestamp = $(timestamp_el).eq(i).data('timestamp');
+          let cardOrderClass = '.card-'+cardorder
+          // console.log(timestamp);
+          // console.log(cardorder);
+          let eventTime= parseInt(timestamp) + 3600;
+          let currentTime = moment().unix();
+          let diffTime = eventTime - currentTime;
+          let duration = moment.duration(diffTime*1000, 'milliseconds');
+          duration = moment.duration(duration - interval, 'milliseconds')
+          //console.log(duration.hours() + ":" + duration.minutes() + ":" + duration.seconds())
+          $(timestamp_el).eq(i).html('<i class="far fa-alarm-clock" style="color: #ffb100;"></i> ' + duration.hours() + ":" + duration.minutes() + ":" + duration.seconds());
+          if (duration.minutes() <= 0 && duration.seconds() <= 0) {
+            $(cardOrderClass).remove();
+          }
+        }
+      }, interval);
+
+      /*
+      // countdown for orders
+      let interval = 1000;
+      //let timestamp_el = $('.timestamp');
+      let timestamp_el = document.getElementsByClassName('timestamp');
+      let ts = []
+      ts.length = timestamp_el.length
+      for (let i = 0; i < timestamp_el.length; i++) {
+        let item = timestamp_el[i];
+
+        ts[i] = setInterval(function() {
+          if ($('.timestamp').eq(i).attr('class') != undefined) {
+            let class_arr = $('.timestamp').eq(i).attr('class').split(' ')
+            let ts = class_arr[1];
+            let cardid = class_arr[2];
+            let cardclass = '.card-'+cardid
+            let eventTime= parseInt(ts) + 3600;
+            let currentTime = moment().unix();
+            let diffTime = eventTime - currentTime;
+            let duration = moment.duration(diffTime*1000, 'milliseconds');
+            duration = moment.duration(duration - interval, 'milliseconds')
+            //console.log(duration.hours() + ":" + duration.minutes() + ":" + duration.seconds())
+            item.innerHTML = '<i class="far fa-alarm-clock" style="color: #ffb100;"></i> ' + duration.hours() + ":" + duration.minutes() + ":" + duration.seconds()
+            if (duration.minutes() <= 0 && duration.seconds() <= 0) {
+              console.log(cardclass);
+              stop_counter(i, cardclass);
+            }
+          }
+        }, interval);
+      }
+
+      function stop_counter(n, id) {
+        console.log('removing: '+id)
+        clearInterval(ts[n]);
+        $(id).remove();
+      }*/
+    </script>
+  </body>
+</html>
