@@ -54,43 +54,6 @@
           }
         }
       }, interval);
-
-      /*
-      // countdown for orders
-      let interval = 1000;
-      //let timestamp_el = $('.timestamp');
-      let timestamp_el = document.getElementsByClassName('timestamp');
-      let ts = []
-      ts.length = timestamp_el.length
-      for (let i = 0; i < timestamp_el.length; i++) {
-        let item = timestamp_el[i];
-
-        ts[i] = setInterval(function() {
-          if ($('.timestamp').eq(i).attr('class') != undefined) {
-            let class_arr = $('.timestamp').eq(i).attr('class').split(' ')
-            let ts = class_arr[1];
-            let cardid = class_arr[2];
-            let cardclass = '.card-'+cardid
-            let eventTime= parseInt(ts) + 3600;
-            let currentTime = moment().unix();
-            let diffTime = eventTime - currentTime;
-            let duration = moment.duration(diffTime*1000, 'milliseconds');
-            duration = moment.duration(duration - interval, 'milliseconds')
-            //console.log(duration.hours() + ":" + duration.minutes() + ":" + duration.seconds())
-            item.innerHTML = '<i class="far fa-alarm-clock" style="color: #ffb100;"></i> ' + duration.hours() + ":" + duration.minutes() + ":" + duration.seconds()
-            if (duration.minutes() <= 0 && duration.seconds() <= 0) {
-              console.log(cardclass);
-              stop_counter(i, cardclass);
-            }
-          }
-        }, interval);
-      }
-
-      function stop_counter(n, id) {
-        console.log('removing: '+id)
-        clearInterval(ts[n]);
-        $(id).remove();
-      }*/
     </script>
   </body>
 </html>
