@@ -20,6 +20,8 @@
     <div class="card card-order card-12137" data-orderid="12137">
       12137: <p class="timestamp" data-timestamp="1588651375">1588651375</p>
     </div>
+
+    <span class="time-elapsed"></span>
     
 
 
@@ -54,6 +56,39 @@
           }
         }
       }, interval);
+
+
+      var swInterval;
+      function orderTimeElapsed(){
+        let startTime = moment().unix();
+        swInterval = setInterval(function(){
+          let currentTime = moment().unix();
+          let diffTime = currentTime - startTime;
+          let duration = moment.duration(diffTime*1000, 'milliseconds');
+          var minutes;
+                            if (duration.minutes() <= 9) {
+                              minutes = "0"+duration.minutes();
+                            } else {
+                              minutes = duration.minutes();
+                            }
+                            var seconds;
+                            if (duration.seconds() <= 9) {
+                              seconds = "0"+duration.seconds();
+                            } else {
+                              seconds = duration.seconds();
+                            }
+                            console.log(minutes + ":" + seconds);
+          //console.log(duration.hours() + ":" + duration.minutes() + ":" + duration.seconds());
+          //$('.time-elapsed').html(duration.minutes() + ":" + duration.seconds());
+          $('.time-elapsed').html(minutes + ":" + seconds);
+        }, interval)                  
+      }
+      
+
+      function stopTimer(){
+        clearInterval(swInterval);
+      }
+      //clearInterval(swInterval);
     </script>
   </body>
 </html>
