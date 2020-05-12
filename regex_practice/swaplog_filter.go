@@ -122,11 +122,11 @@ func main() {
 	// fmt.Println(logString)
 	// str := SwapLogFilter(logString, "full")
 	// fmt.Println(str)
-	// var multipleLogs = []string{logString, logString0, logString1}
-	// for i, v := range multipleLogs {
-	// 	fmt.Println(i)
-	// 	fmt.Println(v)
-	// }
+	var multipleLogs = []string{logString, logString0, logString1}
+	for i, v := range multipleLogs {
+		fmt.Println(i)
+		fmt.Println(v)
+	}
 	var logarr []SwapsHistory
 	logval, _ := SwapLogFilter(logString, "full")
 	// fmt.Println(logval)
