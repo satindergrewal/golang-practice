@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"regexp"
 	"strconv"
@@ -135,16 +136,34 @@ func main() {
 // SwapsHistory returns processed slice of swaplogs in JSON format
 func (history SwapsHistory) SwapsHistory() string {
 
-	// var history []SwapsHistory
-	var multipleLogs = []string{logString, logString0, logString1}
-	for _, v := range multipleLogs {
-		// fmt.Println(i)
-		// fmt.Println(v)
+	files, err := ioutil.ReadDir("swaplogs")
+	if err != nil {
+		log.Fatal(err)
+	}
 
-		logval, _ := SwapLogFilter(v, "full")
+	// for _, file := range files {
+	// 	fmt.Println(file.Name())
+	// 	fileRead, err := ioutil.ReadFile("swaplogs/" + file.Name())
+	// 	if err != nil {
+	// 		log.Fatal(err)
+	// 	}
+	// 	fmt.Println(string(fileRead))
+	// }
+
+	// var multipleLogs = []string{logString, logString0, logString1}
+	for _, file := range files {
+		// fmt.Println(i)
+		// fmt.Println(file)
+
+		fileRead, err := ioutil.ReadFile("swaplogs/" + file.Name())
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		logval, _ := SwapLogFilter(string(fileRead), "full")
 		// fmt.Println(logval)
 		var _logval []SwapStatus
-		err := json.Unmarshal([]byte(logval), &_logval)
+		err = json.Unmarshal([]byte(logval), &_logval)
 		if err != nil {
 			log.Println(err)
 		}
@@ -159,6 +178,7 @@ func (history SwapsHistory) SwapsHistory() string {
 
 	// var logarJSON string
 	logarJSON, _ := json.Marshal(history)
+	// fmt.Println(len(history))
 	// logarJSON, _ := json.MarshalIndent(history, "", "  ")
 	// fmt.Println(string(logarJSON))
 	return string(logarJSON)

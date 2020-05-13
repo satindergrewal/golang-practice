@@ -2,3 +2,4 @@ src/github.com
 src/golang.org
 .idea
 /regex_practice/swaplogs/*.log
+.DS_Store
