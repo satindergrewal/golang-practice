@@ -122,26 +122,28 @@ func main() {
 	// fmt.Println(logString)
 	// str := SwapLogFilter(logString, "full")
 	// fmt.Println(str)
+
+	var logarr []SwapsHistory
 	var multipleLogs = []string{logString, logString0, logString1}
 	for i, v := range multipleLogs {
 		fmt.Println(i)
-		fmt.Println(v)
+		// fmt.Println(v)
+
+		logval, _ := SwapLogFilter(v, "full")
+		// fmt.Println(logval)
+		var _logval []SwapStatus
+		err := json.Unmarshal([]byte(logval), &_logval)
+		if err != nil {
+			log.Println(err)
+		}
+
+		logarr = append(logarr, SwapsHistory{
+			SwapID:    "3898708736",
+			TimeStamp: "3898708736",
+			SwapLog:   _logval,
+		})
+		// fmt.Println("\n", logarr)
 	}
-	var logarr []SwapsHistory
-	logval, _ := SwapLogFilter(logString, "full")
-	// fmt.Println(logval)
-	var _logval []SwapStatus
-	err := json.Unmarshal([]byte(logval), &_logval)
-	if err != nil {
-		log.Println(err)
-	}
-	// logarr =
-	logarr = append(logarr, SwapsHistory{
-		SwapID:    "3898708736",
-		TimeStamp: "3898708736",
-		SwapLog:   _logval,
-	})
-	// fmt.Println("\n", logarr)
 
 	// var logarJSON string
 	// logarJSON, _ := json.Marshal(logarr)
