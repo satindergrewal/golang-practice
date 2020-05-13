@@ -110,12 +110,15 @@ type ZFrom []struct {
 	Memo    string  `json:"memo,omitempty"`
 }
 
-//SwapsHistory type stores the single object from Swaps logs history
-type SwapsHistory struct {
+// SwapHistory type stores the single object from Swaps logs history
+type SwapHistory struct {
 	SwapID    string       `json:"swapid"`
 	TimeStamp string       `json:"timestamp"`
 	SwapLog   []SwapStatus `json:"swaplog"`
 }
+
+// SwapsHistory type is used as collection of SwapHistory objects
+type SwapsHistory []SwapHistory
 
 func main() {
 
@@ -123,10 +126,19 @@ func main() {
 	// str := SwapLogFilter(logString, "full")
 	// fmt.Println(str)
 
-	var logarr []SwapsHistory
+	var history SwapsHistory
+	allhistory := history.SwapsHistory()
+	fmt.Println(allhistory)
+
+}
+
+// SwapsHistory returns processed slice of swaplogs in JSON format
+func (history SwapsHistory) SwapsHistory() string {
+
+	// var history []SwapsHistory
 	var multipleLogs = []string{logString, logString0, logString1}
-	for i, v := range multipleLogs {
-		fmt.Println(i)
+	for _, v := range multipleLogs {
+		// fmt.Println(i)
 		// fmt.Println(v)
 
 		logval, _ := SwapLogFilter(v, "full")
@@ -137,19 +149,19 @@ func main() {
 			log.Println(err)
 		}
 
-		logarr = append(logarr, SwapsHistory{
+		history = append(history, SwapHistory{
 			SwapID:    "3898708736",
 			TimeStamp: "3898708736",
 			SwapLog:   _logval,
 		})
-		// fmt.Println("\n", logarr)
+		// fmt.Println("\n", history)
 	}
 
 	// var logarJSON string
-	// logarJSON, _ := json.Marshal(logarr)
-	logarJSON, _ := json.MarshalIndent(logarr, "", "  ")
-	fmt.Println(string(logarJSON))
-
+	logarJSON, _ := json.Marshal(history)
+	// logarJSON, _ := json.MarshalIndent(history, "", "  ")
+	// fmt.Println(string(logarJSON))
+	return string(logarJSON)
 }
 
 // SwapLogFilter returns JSON processed data for submitted log string
