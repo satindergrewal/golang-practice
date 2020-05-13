@@ -141,15 +141,6 @@ func (history SwapsHistory) SwapsHistory() string {
 		log.Fatal(err)
 	}
 
-	// for _, file := range files {
-	// 	fmt.Println(file.Name())
-	// 	fileRead, err := ioutil.ReadFile("swaplogs/" + file.Name())
-	// 	if err != nil {
-	// 		log.Fatal(err)
-	// 	}
-	// 	fmt.Println(string(fileRead))
-	// }
-
 	// var multipleLogs = []string{logString, logString0, logString1}
 	for _, file := range files {
 		// fmt.Println(i)
@@ -176,12 +167,12 @@ func (history SwapsHistory) SwapsHistory() string {
 		// fmt.Println("\n", history)
 	}
 
-	// var logarJSON string
-	logarJSON, _ := json.Marshal(history)
+	// var historyJSON string
+	historyJSON, _ := json.Marshal(history)
 	// fmt.Println(len(history))
-	// logarJSON, _ := json.MarshalIndent(history, "", "  ")
-	// fmt.Println(string(logarJSON))
-	return string(logarJSON)
+	// historyJSON, _ := json.MarshalIndent(history, "", "  ")
+	// fmt.Println(string(historyJSON))
+	return string(historyJSON)
 }
 
 // SwapLogFilter returns JSON processed data for submitted log string
