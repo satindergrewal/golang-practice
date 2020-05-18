@@ -89,19 +89,20 @@ z_sendmany.() -> opid.(opid-d0151afd-22f4-4e82-9a71-e8ed455c68cd)
 
 // SwapStatus defines the data type to store filtered data and push to application in JSON format for UI side rendering.
 type SwapStatus struct {
-	State      string  `json:"state,omitempty"`
-	StateID    string  `json:"state_id,omitempty"`
-	Status     string  `json:"status,omitempty"`
-	StateHash  string  `json:"state_hash,omitempty"`
-	BaseTxID   string  `json:"base_txid,omitempty"`
-	RelTxID    string  `json:"rel_txid,omitempty"`
-	SwapID     string  `json:"swap_id,omitempty"`
-	SendToAddr string  `json:"sendtoaddr,omitempty"`
-	RecvAddr   string  `json:"recvaddr,omitempty"`
-	Base       string  `json:"base,omitempty"`
-	Rel        string  `json:"rel,omitempty"`
-	BaseAmount float64 `json:"base_amount,omitempty"`
-	RelAmount  float64 `json:"rel_amount,omitempty"`
+	State        string  `json:"state,omitempty"`
+	StateID      string  `json:"state_id,omitempty"`
+	Status       string  `json:"status,omitempty"`
+	StateHash    string  `json:"state_hash,omitempty"`
+	BaseTxID     string  `json:"base_txid,omitempty"`
+	RelTxID      string  `json:"rel_txid,omitempty"`
+	SwapID       string  `json:"swap_id,omitempty"`
+	SendToAddr   string  `json:"sendtoaddr,omitempty"`
+	RecvAddr     string  `json:"recvaddr,omitempty"`
+	Base         string  `json:"base,omitempty"`
+	Rel          string  `json:"rel,omitempty"`
+	BaseAmount   float64 `json:"base_amount,omitempty"`
+	RelAmount    float64 `json:"rel_amount,omitempty"`
+	SwapFullData string  `json:"swap_full_data,omitempty"`
 }
 
 //ZFrom to render the JSON data from "from." log entery coming from subatomic stdout
@@ -124,21 +125,42 @@ type SwapsHistory []SwapHistory
 func main() {
 
 	// fmt.Println(logString)
-	// str := SwapLogFilter(logString, "full")
+	// str, _ := SwapLogFilter(logString, "full")
 	// fmt.Println(str)
 
 	var history SwapsHistory
-	allhistory := history.SwapsHistory()
-	fmt.Println(allhistory)
+	allhistory, _ := history.SwapsHistory()
+	// fmt.Println(len(allhistory[0].SwapLog[12].SwapFullData))
+	fmt.Println(allhistory[0].SwapLog[12].SwapFullData)
+
+	// files, err := ioutil.ReadDir("swaplogs")
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+
+	// for _, file := range files {
+	// 	// fmt.Println(file.Name())
+	// 	fn := strings.Split(file.Name(), "_")
+	// 	fnid := strings.Split(fn[1], ".")
+	// 	timestamp := fn[0]
+	// 	swapid := fnid[0]
+	// 	fmt.Printf("\ntimestamp: %s\nswapid: %s\n", timestamp, swapid)
+	// 	// fileRead, err := ioutil.ReadFile("swaplogs/" + file.Name())
+	// 	// if err != nil {
+	// 	// 	log.Fatal(err)
+	// 	// }
+	// 	// fmt.Println(string(fileRead))
+	// }
 
 }
 
 // SwapsHistory returns processed slice of swaplogs in JSON format
-func (history SwapsHistory) SwapsHistory() string {
+func (history SwapsHistory) SwapsHistory() (SwapsHistory, error) {
 
 	files, err := ioutil.ReadDir("swaplogs")
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return history, errors.New(err.Error())
 	}
 
 	// var multipleLogs = []string{logString, logString0, logString1}
@@ -146,33 +168,43 @@ func (history SwapsHistory) SwapsHistory() string {
 		// fmt.Println(i)
 		// fmt.Println(file)
 
+		fn := strings.Split(file.Name(), "_")
+		fnid := strings.Split(fn[1], ".")
+		timestamp := fn[0]
+		swapid := fnid[0]
+		// fmt.Printf("\ntimestamp: %s\nswapid: %s\n", timestamp, swapid)
+
 		fileRead, err := ioutil.ReadFile("swaplogs/" + file.Name())
 		if err != nil {
 			log.Fatal(err)
 		}
 
 		logval, _ := SwapLogFilter(string(fileRead), "full")
-		// fmt.Println(logval)
+		// fmt.Println("logval", logval)
 		var _logval []SwapStatus
 		err = json.Unmarshal([]byte(logval), &_logval)
 		if err != nil {
 			log.Println(err)
 		}
 
+		// fmt.Println(len(_logval))
+		// fmt.Println(_logval[len(_logval)-1])
+
 		history = append(history, SwapHistory{
-			SwapID:    "3898708736",
-			TimeStamp: "3898708736",
+			SwapID:    swapid,
+			TimeStamp: timestamp,
 			SwapLog:   _logval,
 		})
 		// fmt.Println("\n", history)
 	}
 
 	// var historyJSON string
-	historyJSON, _ := json.Marshal(history)
+	// historyJSON, _ := json.Marshal(history)
 	// fmt.Println(len(history))
 	// historyJSON, _ := json.MarshalIndent(history, "", "  ")
 	// fmt.Println(string(historyJSON))
-	return string(historyJSON)
+	// return string(historyJSON)
+	return history, nil
 }
 
 // SwapLogFilter returns JSON processed data for submitted log string
@@ -219,23 +251,27 @@ func SwapLogFilter(logString, answer string) (string, error) {
 	//}
 
 	// fmt.Println(`----`)
-	var expChAprov = regexp.MustCompile(`(?m)channelapproved.+$`)
+	var expChAprov = regexp.MustCompile(`(?-s).*channelapproved.*(?s)`)
 	chAprov := expChAprov.FindString(logString)
 	// fmt.Println(chAprov)
 	chAprovSf := strings.Fields(chAprov)
 	if len(chAprovSf) > 0 {
 		// fmt.Printf("length of chAprovSf is greater: %d\n", len(chAprovSf))
 
-		// fmt.Println(chAprovSf[0])
-		// fmt.Println(chAprovSf[1])
-		// fmt.Println(chAprovSf[2])
-		aprStatus := strings.Split(chAprovSf[2], ".")
+		baseRel := strings.Split(chAprovSf[2], "/")
+		rel := strings.ReplaceAll(baseRel[0], "(", "")
+		base := strings.ReplaceAll(baseRel[1], ")", "")
+
+		aprStatus := strings.Split(chAprovSf[5], ".")
 		// fmt.Println(aprStatus[1])
 		// fmt.Printf("Channel with ID approved with status %s\n", aprStatus[1])
 
 		state1 := SwapStatus{
 			Status: aprStatus[1],
-			State:  chAprovSf[0],
+			State:  chAprovSf[3],
+			SwapID: chAprovSf[0],
+			Base:   base,
+			Rel:    rel,
 		}
 
 		// fmt.Println("state 1:", state1)
@@ -676,8 +712,24 @@ func SwapLogFilter(logString, answer string) (string, error) {
 	// fmt.Printf("length of dPowBcastSf is lower: %d\n", len(dPowBcastSf))
 	//}
 
-	statusesJSON, _ := json.Marshal(statuses)
-	// statusesJSON, _ := json.MarshalIndent(statuses, "", "  ")
+	// fmt.Println(`----`)
+	var expSwapData = regexp.MustCompile(`(?-s).*subatomic_cmd.*(?s)`)
+	SwapData := expSwapData.FindString(logString)
+	// fmt.Println(SwapData)
+	stateDone := SwapStatus{
+		SwapFullData: SwapData,
+	}
+
+	stateDoneJSON, _ := json.Marshal(stateDone)
+	if answer == "single" {
+		return string(stateDoneJSON), nil
+	}
+	if answer == "full" {
+		statuses = append(statuses, stateDone)
+	}
+
+	// statusesJSON, _ := json.Marshal(statuses)
+	statusesJSON, _ := json.MarshalIndent(statuses, "", "  ")
 	// fmt.Println(statusesJSON)
 
 	if answer == "full" {
