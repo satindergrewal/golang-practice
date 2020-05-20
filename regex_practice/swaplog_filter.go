@@ -130,8 +130,37 @@ func main() {
 
 	var history SwapsHistory
 	allhistory, _ := history.SwapsHistory()
-	// fmt.Println(len(allhistory[0].SwapLog[12].SwapFullData))
-	fmt.Println(allhistory[0].SwapLog[12].SwapFullData)
+	// fmt.Println(len(allhistory[0].SwapLog))
+	fmt.Println(allhistory[0].SwapLog[len(allhistory[0].SwapLog)-1].SwapFullData, "\n\n")
+
+	// var teststr []interface{}
+	// err := json.Unmarshal([]byte(allhistory[0].SwapLog[len(allhistory[0].SwapLog)-1].SwapFullData), &teststr)
+
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+
+	// // fmt.Println(teststr[7])
+	// fmt.Println("authorized: ", teststr[7].(map[string]interface{})["authorized"])
+	// fmt.Println("base: ", teststr[7].(map[string]interface{})["base"])
+	// fmt.Println("basebal: ", teststr[7].(map[string]interface{})["basebal"])
+	// fmt.Println("baseicon: ", teststr[7].(map[string]interface{})["baseicon"])
+	// fmt.Println("dex_pubkey: ", teststr[7].(map[string]interface{})["dex_pubkey"])
+	// fmt.Println("handle: ", teststr[7].(map[string]interface{})["handle"])
+	// fmt.Println("max_volume: ", teststr[7].(map[string]interface{})["max_volume"])
+	// fmt.Println("orderid: ", teststr[7].(map[string]interface{})["orderid"])
+	// fmt.Println("price: ", teststr[7].(map[string]interface{})["price"])
+	// fmt.Println("pubkey: ", teststr[7].(map[string]interface{})["pubkey"])
+	// fmt.Println("rel: ", teststr[7].(map[string]interface{})["rel"])
+	// fmt.Println("relbal: ", teststr[7].(map[string]interface{})["relbal"])
+	// fmt.Println("relicon: ", teststr[7].(map[string]interface{})["relicon"])
+	// fmt.Println("timestamp: ", teststr[7].(map[string]interface{})["timestamp"])
+	// fmt.Println("timestampstr: ", teststr[7].(map[string]interface{})["timestampstr"])
+	// fmt.Println("zbase: ", teststr[7].(map[string]interface{})["zbase"])
+	// fmt.Println("zbasebal: ", teststr[7].(map[string]interface{})["zbasebal"])
+	// fmt.Println("zrel: ", teststr[7].(map[string]interface{})["zrel"])
+	// fmt.Println("zrelbal: ", teststr[7].(map[string]interface{})["zrelbal"])
+	// fmt.Printf("%T", teststr[7])
 
 	// files, err := ioutil.ReadDir("swaplogs")
 	// if err != nil {
