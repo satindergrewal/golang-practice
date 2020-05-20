@@ -114,9 +114,18 @@ type ZFrom []struct {
 
 // SwapHistory type stores the single object from Swaps logs history
 type SwapHistory struct {
-	SwapID    string       `json:"swapid"`
-	TimeStamp string       `json:"timestamp"`
-	SwapLog   []SwapStatus `json:"swaplog"`
+	SwapID     string       `json:"swapid"`
+	TimeStamp  string       `json:"timestamp"`
+	Base       string       `json:"base"`
+	Rel        string       `json:"rel"`
+	BaseAmount float64      `json:"baseamount"`
+	RelAmount  float64      `json:"relamount"`
+	BaseTxID   string       `json:"basetxid"`
+	RelTxID    string       `json:"reltxid"`
+	Status     string       `json:"status"`
+	BobID      string       `json:"bobid"`
+	BobPubkey  string       `json:"bobpubkey"`
+	SwapLog    []SwapStatus `json:"swaplog"`
 }
 
 // SwapsHistory type is used as collection of SwapHistory objects
@@ -130,8 +139,8 @@ func main() {
 
 	var history SwapsHistory
 	allhistory, _ := history.SwapsHistory()
-	// fmt.Println(len(allhistory[0].SwapLog))
-	fmt.Println(allhistory[0].SwapLog[len(allhistory[0].SwapLog)-1].SwapFullData, "\n\n")
+	fmt.Println(allhistory[0])
+	// fmt.Println(allhistory[0].SwapLog[len(allhistory[0].SwapLog)-1].SwapFullData, "\n\n")
 
 	// var teststr []interface{}
 	// err := json.Unmarshal([]byte(allhistory[0].SwapLog[len(allhistory[0].SwapLog)-1].SwapFullData), &teststr)
@@ -217,20 +226,37 @@ func (history SwapsHistory) SwapsHistory() (SwapsHistory, error) {
 		}
 
 		// fmt.Println(len(_logval))
-		// fmt.Println(_logval[len(_logval)-1])
+		fmt.Println(_logval[6].RelTxID)
+
+		var orderIDInfo []interface{}
+		json.Unmarshal([]byte(_logval[len(_logval)-1].SwapFullData), &orderIDInfo)
+
+		// if err != nil {
+		// 	fmt.Println(err)
+		// }
+
+		// fmt.Println(orderIDInfo[6])
+		// fmt.Println("authorized: ", orderIDInfo[7].(map[string]interface{})["authorized"])
+
+		baseAmount, err := strconv.ParseFloat(fmt.Sprintf("%v", orderIDInfo[3]), 64)
+		relAmount, err := strconv.ParseFloat(fmt.Sprintf("%v", orderIDInfo[4]), 64)
 
 		history = append(history, SwapHistory{
-			SwapID:    swapid,
-			TimeStamp: timestamp,
-			SwapLog:   _logval,
+			SwapID:     swapid,
+			TimeStamp:  timestamp,
+			Base:       fmt.Sprintf("%v", orderIDInfo[7].(map[string]interface{})["base"]),
+			Rel:        fmt.Sprintf("%v", orderIDInfo[7].(map[string]interface{})["rel"]),
+			BaseAmount: baseAmount,
+			RelAmount:  relAmount,
+			SwapLog:    _logval,
 		})
 		// fmt.Println("\n", history)
 	}
 
-	// var historyJSON string
-	// historyJSON, _ := json.Marshal(history)
-	// fmt.Println(len(history))
-	// historyJSON, _ := json.MarshalIndent(history, "", "  ")
+	// var historyJSON []byte
+	// // historyJSON, _ = json.Marshal(history)
+	// // fmt.Println(len(history))
+	// historyJSON, _ = json.MarshalIndent(history, "", "  ")
 	// fmt.Println(string(historyJSON))
 	// return string(historyJSON)
 	return history, nil
