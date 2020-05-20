@@ -220,7 +220,7 @@ func (history SwapsHistory) SwapsHistory() (SwapsHistory, error) {
 		fnid := strings.Split(fn[1], ".")
 		timestamp := fn[0]
 		swapid := fnid[0]
-		fmt.Printf("\ntimestamp: %s\nswapid: %s\n", fn, fnid)
+		// fmt.Printf("\ntimestamp: %s\nswapid: %s\n", fn, fnid)
 
 		fileRead, err := ioutil.ReadFile("swaplogs/" + file.Name())
 		if err != nil {
@@ -238,17 +238,23 @@ func (history SwapsHistory) SwapsHistory() (SwapsHistory, error) {
 		// fmt.Println(len(_logval))
 		// fmt.Println(_logval[6].RelTxID)
 
-		var reltxid, basetxid string
+		var reltxid, basetxid, swapstatus string
+		swapstatus = "Incomplete"
 		for _, v := range _logval {
-			// fmt.Println(v.State)
-			// fmt.Println(v.Status)
+			fmt.Println("State: ", v.State)
+			fmt.Println("Status: ", v.Status)
 			if v.RelTxID != "" {
 				reltxid = v.RelTxID
 			}
 			if v.BaseTxID != "" {
 				basetxid = v.BaseTxID
 			}
+			if v.State == "SWAP COMPLETE" {
+				swapstatus = "Completed"
+				fmt.Println(swapstatus)
+			}
 		}
+		fmt.Println(swapstatus)
 
 		var orderIDInfo []interface{}
 		json.Unmarshal([]byte(_logval[len(_logval)-1].SwapFullData), &orderIDInfo)
@@ -289,16 +295,17 @@ func (history SwapsHistory) SwapsHistory() (SwapsHistory, error) {
 			RelExplorer:      fmt.Sprintf("%v", orderIDInfo[6]),
 			ZBase:            zbase,
 			ZRel:             zrel,
+			Status:           swapstatus,
 			// SwapLog:    _logval,
 		})
 		// fmt.Println("\n", history)
 	}
 
-	// var historyJSON []byte
-	// // historyJSON, _ = json.Marshal(history)
-	// // fmt.Println(len(history))
-	// historyJSON, _ = json.MarshalIndent(history, "", "  ")
-	// fmt.Println(string(historyJSON))
+	var historyJSON []byte
+	// historyJSON, _ = json.Marshal(history)
+	// fmt.Println(len(history))
+	historyJSON, _ = json.MarshalIndent(history, "", "  ")
+	fmt.Println(string(historyJSON))
 	// return string(historyJSON)
 	return history, nil
 }
