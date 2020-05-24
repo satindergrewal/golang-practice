@@ -3,3 +3,5 @@ src/golang.org
 .idea
 /regex_practice/swaplogs/*.log
 .DS_Store
+golang_daemon/DEX.log
+golang_daemon/DEX_7776

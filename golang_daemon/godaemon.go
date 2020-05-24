@@ -4,6 +4,7 @@ package main
 
 import (
 	"fmt"
+	"golang-practice/kmdutil"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -13,13 +14,24 @@ import (
 	"strconv"
 	"strings"
 	"syscall"
+
+	"github.com/satindergrewal/kmdgo"
 )
 
 var PIDFile = "./daemonize.pid"
+var DexPid = "./kmd_dex.pid"
 
-func savePID(pid int) {
+func savePID(p string, pid int) {
 
-	file, err := os.Create(PIDFile)
+	var file *os.File
+	var err error
+	if p == "self" {
+		file, err = os.Create(PIDFile)
+	} else {
+		p = "./kmd_" + p + ".pid"
+		file, err = os.Create(p)
+	}
+
 	if err != nil {
 		log.Printf("Unable to create pid file : %v\n", err)
 		os.Exit(1)
@@ -81,14 +93,28 @@ func main() {
 
 		// check if daemon already running.
 		if _, err := os.Stat(PIDFile); err == nil {
-			fmt.Println("Already running or /tmp/daemonize.pid file exist.")
+			fmt.Println("Already running or ./daemonize.pid file exist.")
 			os.Exit(1)
 		}
 
 		cmd := exec.Command(os.Args[0], "main")
 		cmd.Start()
 		fmt.Println("Daemon process ID is : ", cmd.Process.Pid)
-		savePID(cmd.Process.Pid)
+		savePID("self", cmd.Process.Pid)
+		// os.Exit(0)
+
+		appName := "DEX"
+		dir := kmdutil.AppDataDir(appName, false)
+		fmt.Println(dir)
+		if _, err := os.Stat(dir + "/komodod.pid"); err == nil {
+			fmt.Println("Already running or DEX pid file exist.")
+			os.Exit(1)
+		}
+
+		dexcmd := exec.Command("komodod", "-ac_name=DEX", "-daemon", "-nSPV=1", "-server", "-ac_supply=999999", "-pubkey=03732f8ef851ff234c74d0df575c2c5b159e2bab3faca4ec52b3f217d5cda5361d", "-dexp2p=2", "-addnode=136.243.58.134", "-handle=satinder", "-recvZaddr=zs1zqks0tergf6nk69evm6awte4xmhf2fd9epnv946vzlhfxztkls6a9lyfmuafda00krvkvj0xagp", "-recvTaddr=RBthCSgNLE3rwvAKce8JNSo7xDpxQEiRTX")
+		dexcmd.Start()
+		fmt.Println("DEX komodod process ID is : ", dexcmd.Process.Pid)
+		// savePID("dex", dexcmd.Process.Pid)
 		os.Exit(0)
 
 	}
@@ -99,6 +125,18 @@ func main() {
 	// and exit. If Process ID does not exist, prompt error and quit
 
 	if strings.ToLower(os.Args[1]) == "stop" {
+
+		appName := kmdgo.NewAppType(`DEX`)
+		var info kmdgo.Stop
+		info, err := appName.Stop()
+		if err != nil {
+			fmt.Printf("Code: %v\n", info.Error.Code)
+			fmt.Printf("Message: %v\n\n", info.Error.Message)
+			log.Fatalln("Err happened", err)
+		}
+		// fmt.Println(info)
+		fmt.Println(info.Result)
+
 		if _, err := os.Stat(PIDFile); err == nil {
 			data, err := ioutil.ReadFile(PIDFile)
 			if err != nil {
