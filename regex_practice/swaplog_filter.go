@@ -87,6 +87,30 @@ start subatomic_loop iambob.0 zVRSC -> PIRATE, 3898708736 114999999 1121685088
 z_sendmany.() -> opid.(opid-d0151afd-22f4-4e82-9a71-e8ed455c68cd)
 `
 
+var logStringWin string = `
+subatomic_channel_alice (PIRATE/PIRATE) 2093206496 2093206496 with 0.50000000 50000000
+initialized 2 messages, updated 8 out of total.8
+rel.PIRATE/PIRATE  openrequest 2093206496 status.0 (RBthCSgNLE3rwvAKce8JNSo7xDpxQEiRTX/zs1zqks0tergf6nk69evm6awte4xmhf2fd9epnv946vzlhfxztkls6a9lyfmuafda00krvkvj0xagp)
+2093206496 openrequest.2274848320 -> (0133f63a3d4ae8db7e9efe8b8702e10ecc9ef44901dd2321c92132889bc6656b4e)
+start subatomic_loop iambob.0 KMD -> PIRATE, 2093206496 50000000 2274848320
+2093206496 iambob.0 (KMD/PIRATE) channelapproved origid.2093206496 status.1
+2093206496 approvalid.437055168 (0133f63a3d4ae8db7e9efe8b8702e10ecc9ef44901dd2321c92132889bc6656b4e)
+2093206496 iambob.0 (KMD/PIRATE) incomingchannel status.2
+z_sendmany.( PIRATE) from.(zs1zqks0tergf6nk69evm6awte4xmhf2fd9epnv946vzlhfxztkls6a9lyfmuafda00krvkvj0xagp) -> ["{\"address\":\"zs1wq40g4wvrzc2eq9xw7wtstshgar68ash659eq20ellm5jeqsyfwe5qs3tex9l3mjnrj2yf34hw0\",\"amount\":0.50000000,\"memo\":\"3230393332303634393620\"}]"
+z_sendmany.() -> opid.(opid-642c5033-906c-4a83-86a8-dbe19cb3e5e8)
+2093206496: 0.50000000 PIRATE -> zs1wq40g4wvrzc2eq9xw7wtstshgar68ash659eq20ellm5jeqsyfwe5qs3tex9l3mjnrj2yf34hw0, paymentid[0] 3399527104
+2093206496 iambob.0 (KMD/PIRATE) incomingpayment status.4
+2093206496 alice waits for KMD.c73741466fc5f3faed66a4dedbedeefb43276409c6edf27cf1a50071fe1333c4 to be in mempool (0.02777777 -> RBthCSgNLE3rwvAKce8JNSo7xDpxQEiRTX)
+RBthCSgNLE3rwvAKce8JNSo7xDpxQEiRTX received 0.02777777 vs 0.02777777
+2093206496 SWAP COMPLETE <<<<<<<<<<<<<<<<
+dpow_broadcast.(completed/86eddef84859f3aa5724335385a698513ca0136b2cbc6d765acc6cf8fa9c9e22) [ ] 86eddef84859f3aa5724335385a698513ca0136b2cbc6d765acc6cf8fa9c9e22 error.(-1)
+2093206496 paidid.2240131296
+2093206496 iambob.0 (KMD/PIRATE) incomingfullypaid status.5
+2093206496 closedid.1822658336
+2093206496 iambob.0 (KMD/PIRATE) incomingclose status.6
+alice 2093206496 50000000 2274848320 finished
+`
+
 // SwapStatus defines the data type to store filtered data and push to application in JSON format for UI side rendering.
 type SwapStatus struct {
 	State        string  `json:"state,omitempty"`
@@ -143,13 +167,13 @@ type SwapsHistory []SwapHistory
 
 func main() {
 
-	// fmt.Println(logString)
-	// str, _ := SwapLogFilter(logString, "full")
-	// fmt.Println(str)
+	// fmt.Println(logStringWin)
+	str, _ := SwapLogFilter(logStringWin, "full")
+	fmt.Println(str)
 
-	var history SwapsHistory
-	allhistory, _ := history.SwapsHistory()
-	fmt.Println(allhistory[0])
+	// var history SwapsHistory
+	// allhistory, _ := history.SwapsHistory()
+	// fmt.Println(allhistory[0])
 	// fmt.Println(allhistory[0].SwapLog[len(allhistory[0].SwapLog)-1].SwapFullData, "\n\n")
 
 	// var teststr []interface{}
@@ -504,30 +528,35 @@ func SwapLogFilter(logString, answer string) (string, error) {
 	// fmt.Println(`----`)
 	var expZFrom = regexp.MustCompile(`(?m)from..+$`)
 	zFrom := expZFrom.FindString(logString)
-	// fmt.Println(zFrom)
+	// fmt.Println("\tzFrom:", zFrom)
 	zFromSf := strings.Fields(zFrom)
-	// fmt.Println(zFromSf)
+	// fmt.Println("\tzFromSf:", zFromSf)
 
 	if len(zFromSf) > 0 {
-		// fmt.Printf("length of zFromSf is greater: %d\n", len(zFromSf))
+		fmt.Printf("length of zFromSf is greater: %d\n", len(zFromSf))
 
-		// fmt.Println(zFromSf[0])
+		fmt.Println(zFromSf[0])
 		zFromSl := strings.Split(zFromSf[0], ".")
 		zFromAddr := strings.ReplaceAll(zFromSl[1], "(", "")
 		zFromAddr = strings.ReplaceAll(zFromAddr, ")", "")
-		// fmt.Println(zFromAddr)
-		// fmt.Println(zFromSf[2])
+		// fmt.Println("\tzFromAddr: ", zFromAddr)
+		// fmt.Println("\tzFromSf[2]: ", zFromSf[2])
 		zFromJSON := strings.ReplaceAll(zFromSf[2], "'", "")
 		zFromJSON = strings.ReplaceAll(zFromJSON, "'", "")
-		// fmt.Printf("%s\n", zFromJSON)
+		zFromJSON = strings.ReplaceAll(zFromJSON, "[\"", "[")
+		zFromJSON = strings.ReplaceAll(zFromJSON, "]\"", "]")
+		zFromJSON = strings.ReplaceAll(zFromJSON, "\\", "")
+		// fmt.Printf("\tzFromJSON: %s\n", zFromJSON)
 		var zj ZFrom
 		err := json.Unmarshal([]byte(zFromJSON), &zj)
 		if err != nil {
 			log.Println(err)
+			// log.Fatalln(err)
 		}
-		// fmt.Println(zj[0].Address)
-		// fmt.Println(zj[0].Amount)
-		// fmt.Println(zj[0].Memo)
+		// fmt.Println("\tzj: ", zj)
+		// fmt.Println("\tzj[0].Address: ", zj[0].Address)
+		// fmt.Println("\tzj[0].Amount: ", zj[0].Amount)
+		// fmt.Println("\tzj[0].Memo: ", zj[0].Memo)
 
 		state3 := SwapStatus{
 			State:      "Sending Z Transaction",
@@ -536,10 +565,10 @@ func SwapLogFilter(logString, answer string) (string, error) {
 			BaseAmount: zj[0].Amount,
 		}
 
-		// fmt.Println("state 1:", state3)
+		// fmt.Println("\tstate 1: ", state3)
 		state3JSON, _ := json.Marshal(state3)
-		// fmt.Println("Sending Z tx")
-		// fmt.Println("state3 JSON:", string(state3JSON))
+		// fmt.Println("\tSending Z tx")
+		// fmt.Println("\tstate3 JSON: ", string(state3JSON))
 		if answer == "single" {
 			return string(state3JSON), nil
 		}

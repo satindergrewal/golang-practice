@@ -39,8 +39,8 @@ func main() {
 	c := greetpb.NewGreetServiceClient(cc)
 	//fmt.Printf("Created client: %f", c)
 
-	doUnary(c)
-	//doServerStreaming(c)
+	// doUnary(c)
+	doServerStreaming(c)
 	//doClientStreaming(c)
 	//doBiDiStreaming(c)
 
