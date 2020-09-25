@@ -37,13 +37,17 @@ func tail(filename string, out io.Writer) {
 				var expNewBlk = regexp.MustCompile(`(?-s).*UpdateTip.*(?s)`)
 				foundBlk := expNewBlk.FindAllString(string(line), -1)
 				// fmt.Println(len(foundBlk))
-				fmt.Println(foundBlk)
+				if len(foundBlk) > 0 {
+					fmt.Println(foundBlk)
+				}
 			} else {
 				// fmt.Fprintln(out, string(line))
 				var expNewBlk = regexp.MustCompile(`(?-s).*UpdateTip.*(?s)`)
 				foundBlk := expNewBlk.FindAllString(string(line), -1)
 				// fmt.Println(len(foundBlk))
-				fmt.Println(foundBlk)
+				if len(foundBlk) > 0 {
+					fmt.Println(foundBlk)
+				}
 			}
 		}
 		pos, err := f.Seek(0, io.SeekCurrent)
