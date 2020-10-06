@@ -16,6 +16,8 @@ import (
 	"golang-practice/grpc-go-practice/greet/greetpb"
 
 	"google.golang.org/grpc"
+
+	"google.golang.org/grpc/reflection"
 )
 
 type server struct{}
@@ -32,13 +34,19 @@ func (*server) Greet(ctx context.Context, req *greetpb.GreetRequest) (*greetpb.G
 
 func (*server) GreetManyTimes(req *greetpb.GreetManyTimesRequest, stream greetpb.GreetService_GreetManyTimesServer) error {
 	firstName := req.GetGreeting().GetFirstName()
+	min := 1
+	// max := 10
 	for i := 0; i < 10; i++ {
-		result := "Hello " + firstName + " number " + strconv.Itoa(i)
+		// randNum := rand.Intn(max - min)
+		randNum := min
+		result := "Hello " + firstName + " number " + strconv.Itoa(i) + ". Sleeping for " + strconv.Itoa(randNum) + " seconds..."
 		res := &greetpb.GreetmanyTimesResponse{
 			Result: result,
 		}
+		fmt.Println(res)
 		stream.Send(res)
-		time.Sleep(1000 * time.Millisecond)
+
+		time.Sleep(time.Duration(randNum) * time.Second)
 	}
 	return nil
 }
@@ -63,7 +71,7 @@ func (*server) LongGreet(stream greetpb.GreetService_LongGreetServer) error {
 }
 
 func (*server) GreetEveryone(stream greetpb.GreetService_GreetEveryoneServer) error {
-	fmt.Printf("LongGreet function was invoked with a streaming request\n")
+	fmt.Printf("LongGreetEveryone function was invoked with a streaming request\n")
 
 	for {
 		req, err := stream.Recv()
@@ -128,6 +136,9 @@ func main() {
 
 	s := grpc.NewServer(opts...)
 	greetpb.RegisterGreetServiceServer(s, &server{})
+
+	// Register reflection service on gRPC server.
+	reflection.Register(s)
 
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("Failed to serve: %v", err)
