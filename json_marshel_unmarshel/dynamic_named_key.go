@@ -744,7 +744,14 @@ func main() {
 		default:
 			// fmt.Println(k, "is of a type I don't know how to handle")
 			fmt.Printf("%T\n", vv)
-			fmt.Printf("%v\n", vv)
+			if val, ok := vv.(map[string]interface{})["city"]; ok {
+				fmt.Println("city ---", val)
+				// fmt.Printf("%v\n", vv.(map[string]interface{})["city"])
+			}
+			if val, ok := vv.(map[string]interface{})["name"]; ok {
+				fmt.Println("name ---", val)
+				// fmt.Printf("%v\n", vv.(map[string]interface{})["name"])
+			}
 		}
 	}
 
