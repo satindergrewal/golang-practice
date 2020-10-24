@@ -721,38 +721,48 @@ func main() {
 
 	var f interface{}
 	// m := f.(map[string]interface{})
-	err := json.Unmarshal([]byte(data3), &f)
+	err := json.Unmarshal([]byte(data2), &f)
 	if err != nil {
 		log.Printf("%v", err)
 	}
 	fmt.Printf("%+v\n", f)
 
-	m := f.(map[string]interface{})
+	fmt.Printf("%T\n", f)
+
+	m := f.([]interface{})
+	// m := f.(map[string]interface{})
+
+	// fmt.Println(m)
 
 	for k, v := range m {
 		fmt.Printf("%+v\n", k)
-		switch vv := v.(type) {
-		case string:
-			fmt.Println(k, "is string", vv)
-		case float64:
-			fmt.Println(k, "is float64", vv)
-		case []interface{}:
-			fmt.Println(k, "is an array:")
-			for i, u := range vv {
-				fmt.Println(i, u)
-			}
-		default:
-			// fmt.Println(k, "is of a type I don't know how to handle")
-			fmt.Printf("%T\n", vv)
-			if val, ok := vv.(map[string]interface{})["city"]; ok {
-				fmt.Println("city ---", val)
-				// fmt.Printf("%v\n", vv.(map[string]interface{})["city"])
-			}
-			if val, ok := vv.(map[string]interface{})["name"]; ok {
-				fmt.Println("name ---", val)
-				// fmt.Printf("%v\n", vv.(map[string]interface{})["name"])
+		fmt.Println("v --- ", v)
+		n := v.(map[string]interface{})
+		for nk, nv := range n {
+			fmt.Printf("nk - %+v\n", nk)
+			fmt.Printf("nv - %+v\n", nv)
+			switch vv := nv.(type) {
+			case string:
+				fmt.Println(nk, "is string", vv)
+			case float64:
+				fmt.Println(nk, "is float64", vv)
+			case []interface{}:
+				fmt.Println(nk, "is an array:")
+				for i, u := range vv {
+					fmt.Println(i, u)
+				}
+			default:
+				// fmt.Println(nk, "is of a type I don't know how to handle")
+				fmt.Printf("%T\n", vv)
+				if val, ok := vv.(map[string]interface{})["city"]; ok {
+					fmt.Println("city ---", val)
+					// fmt.Printf("%v\n", vv.(map[string]interface{})["city"])
+				}
+				if val, ok := vv.(map[string]interface{})["name"]; ok {
+					fmt.Println("name ---", val)
+					// fmt.Printf("%v\n", vv.(map[string]interface{})["name"])
+				}
 			}
 		}
 	}
-
 }
