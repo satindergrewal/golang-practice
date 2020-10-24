@@ -719,6 +719,14 @@ func main() {
 
 	// fmt.Println(data)
 
+	var curConv []GetCurrencyConverter
+
+	json.Unmarshal([]byte(data), &curConv)
+
+	// fmt.Printf("%+v\n", curConv)
+	// fmt.Println(curConv[0])
+	// fmt.Printf("CurrencyInfo --- %+v\n", curConv[0].CurrencyInfo)
+
 	var f interface{}
 	// m := f.(map[string]interface{})
 	err := json.Unmarshal([]byte(data), &f)
@@ -735,7 +743,7 @@ func main() {
 	// fmt.Println(m)
 
 	for k, v := range m {
-		fmt.Printf("%+v\n", k)
+		// fmt.Printf("k -- %+v\n", k)
 		// fmt.Println("v --- ", v)
 		n := v.(map[string]interface{})
 		if _, ok := v.(map[string]interface{})["lastnotarization"]; ok {
@@ -747,8 +755,8 @@ func main() {
 			delete(v.(map[string]interface{}), "multifractional")
 		}
 		for nk, nv := range n {
-			fmt.Printf("nk - %+v\n", nk)
-			fmt.Printf("nv - %T\n", nv)
+			// fmt.Printf("nk - %+v\n", nk)
+			// fmt.Printf("nv - %T\n", nv)
 			switch vv := nv.(type) {
 			case string:
 				fmt.Println(nk, "is string", vv)
@@ -762,51 +770,66 @@ func main() {
 			default:
 				// fmt.Println(nk, "is of a type I don't know how to handle")
 				// fmt.Printf("%T\n", vv)
-				fmt.Printf("vv -- %+v\n", vv)
+				// fmt.Printf("vv -- %+v\n", vv)
 				if val, ok := vv.(map[string]interface{})["name"]; ok {
-					fmt.Println("name ---", val)
+					// fmt.Println("name ---", val)
+					curConv[k].CurrencyInfo.Name = val.(string)
 				}
 				if val, ok := vv.(map[string]interface{})["version"]; ok {
-					fmt.Println("version ---", val)
+					// fmt.Println("version ---", val)
+					curConv[k].CurrencyInfo.Version = int(val.(float64))
 				}
 				if val, ok := vv.(map[string]interface{})["options"]; ok {
-					fmt.Println("options ---", val)
+					// fmt.Println("options ---", val)
+					curConv[k].CurrencyInfo.Options = int(val.(float64))
 				}
 				if val, ok := vv.(map[string]interface{})["parent"]; ok {
-					fmt.Println("parent ---", val)
+					// fmt.Println("parent ---", val)
+					curConv[k].CurrencyInfo.Parent = val.(string)
 				}
 				if val, ok := vv.(map[string]interface{})["systemid"]; ok {
-					fmt.Println("systemid ---", val)
+					// fmt.Println("systemid ---", val)
+					curConv[k].CurrencyInfo.Systemid = val.(string)
 				}
 				if val, ok := vv.(map[string]interface{})["currencyid"]; ok {
-					fmt.Println("currencyid ---", val)
+					// fmt.Println("currencyid ---", val)
+					curConv[k].CurrencyInfo.Currencyid = val.(string)
 				}
 				if val, ok := vv.(map[string]interface{})["notarizationprotocol"]; ok {
-					fmt.Println("notarizationprotocol ---", val)
+					// fmt.Println("notarizationprotocol ---", val)
+					curConv[k].CurrencyInfo.Notarizationprotocol = int(val.(float64))
 				}
 				if val, ok := vv.(map[string]interface{})["proofprotocol"]; ok {
-					fmt.Println("proofprotocol ---", val)
+					// fmt.Println("proofprotocol ---", val)
+					curConv[k].CurrencyInfo.Proofprotocol = int(val.(float64))
 				}
 				if val, ok := vv.(map[string]interface{})["idregistrationprice"]; ok {
-					fmt.Println("idregistrationprice ---", val)
+					// fmt.Println("idregistrationprice ---", val)
+					curConv[k].CurrencyInfo.Idregistrationprice = int(val.(float64))
 				}
 				if val, ok := vv.(map[string]interface{})["idreferrallevels"]; ok {
-					fmt.Println("idreferrallevels ---", val)
+					// fmt.Println("idreferrallevels ---", val)
+					curConv[k].CurrencyInfo.Idreferrallevels = int(val.(float64))
 				}
 				if val, ok := vv.(map[string]interface{})["minnotariesconfirm"]; ok {
-					fmt.Println("minnotariesconfirm ---", val)
+					// fmt.Println("minnotariesconfirm ---", val)
+					curConv[k].CurrencyInfo.Minnotariesconfirm = int(val.(float64))
 				}
 				if val, ok := vv.(map[string]interface{})["billingperiod"]; ok {
-					fmt.Println("billingperiod ---", val)
+					// fmt.Println("billingperiod ---", val)
+					curConv[k].CurrencyInfo.Billingperiod = int(val.(float64))
 				}
 				if val, ok := vv.(map[string]interface{})["notarizationreward"]; ok {
-					fmt.Println("notarizationreward ---", val)
+					// fmt.Println("notarizationreward ---", val)
+					curConv[k].CurrencyInfo.Notarizationreward = int(val.(float64))
 				}
 				if val, ok := vv.(map[string]interface{})["startblock"]; ok {
-					fmt.Println("startblock ---", val)
+					// fmt.Println("startblock ---", val)
+					curConv[k].CurrencyInfo.Startblock = int(val.(float64))
 				}
 				if val, ok := vv.(map[string]interface{})["endblock"]; ok {
-					fmt.Println("endblock ---", val)
+					// fmt.Println("endblock ---", val)
+					curConv[k].CurrencyInfo.Endblock = int(val.(float64))
 				}
 				if val, ok := vv.(map[string]interface{})["currencies"]; ok {
 					// fmt.Printf("currencies type --- %T\n", val)
@@ -818,10 +841,11 @@ func main() {
 						_tmpCurrencies = append(_tmpCurrencies, fmt.Sprintf("%v", curv))
 					}
 					// fmt.Printf("%T\n", _tmpCurrencies)
-					fmt.Printf("%+v\n", _tmpCurrencies)
+					// fmt.Printf("%+v\n", _tmpCurrencies)
+					curConv[k].CurrencyInfo.Currencies = _tmpCurrencies
 				}
 				if val, ok := vv.(map[string]interface{})["weights"]; ok {
-					fmt.Println("weights ---", val)
+					// fmt.Println("weights ---", val)
 					var _tmpWeights []float64
 					for _, wghtv := range val.([]interface{}) {
 						// fmt.Println(wghtv)
@@ -829,10 +853,11 @@ func main() {
 						_tmpWeights = append(_tmpWeights, wghtv.(float64))
 					}
 					// fmt.Printf("%T\n", _tmpWeights)
-					fmt.Printf("%+v\n", _tmpWeights)
+					// fmt.Printf("%+v\n", _tmpWeights)
+					curConv[k].CurrencyInfo.Weights = _tmpWeights
 				}
 				if val, ok := vv.(map[string]interface{})["conversions"]; ok {
-					fmt.Println("conversions ---", val)
+					// fmt.Println("conversions ---", val)
 					var _tmpConversions []float64
 					for _, cnvrsv := range val.([]interface{}) {
 						// fmt.Println(cnvrsv)
@@ -840,16 +865,19 @@ func main() {
 						_tmpConversions = append(_tmpConversions, cnvrsv.(float64))
 					}
 					// fmt.Printf("%T\n", _tmpConversions)
-					fmt.Printf("%+v\n", _tmpConversions)
+					// fmt.Printf("%+v\n", _tmpConversions)
+					curConv[k].CurrencyInfo.Conversions = _tmpConversions
 				}
 				if val, ok := vv.(map[string]interface{})["initialsupply"]; ok {
-					fmt.Println("initialsupply ---", val)
+					// fmt.Println("initialsupply ---", val)
+					curConv[k].CurrencyInfo.Initialsupply = val.(float64)
 				}
 				if val, ok := vv.(map[string]interface{})["prelaunchcarveout"]; ok {
-					fmt.Println("prelaunchcarveout ---", val)
+					// fmt.Println("prelaunchcarveout ---", val)
+					curConv[k].CurrencyInfo.Prelaunchcarveout = val.(float64)
 				}
 				if val, ok := vv.(map[string]interface{})["initialcontributions"]; ok {
-					fmt.Println("initialcontributions ---", val)
+					// fmt.Println("initialcontributions ---", val)
 					var _tmpInitContri []float64
 					for _, initcontv := range val.([]interface{}) {
 						// fmt.Println(initcontv)
@@ -857,10 +885,11 @@ func main() {
 						_tmpInitContri = append(_tmpInitContri, initcontv.(float64))
 					}
 					// fmt.Printf("%T\n", _tmpInitContri)
-					fmt.Printf("%+v\n", _tmpInitContri)
+					// fmt.Printf("%+v\n", _tmpInitContri)
+					curConv[k].CurrencyInfo.Initialcontributions = _tmpInitContri
 				}
 				if val, ok := vv.(map[string]interface{})["preconversions"]; ok {
-					fmt.Println("preconversions ---", val)
+					// fmt.Println("preconversions ---", val)
 					var _tmpPreConv []float64
 					for _, preconv := range val.([]interface{}) {
 						// fmt.Println(preconv)
@@ -868,12 +897,24 @@ func main() {
 						_tmpPreConv = append(_tmpPreConv, preconv.(float64))
 					}
 					// fmt.Printf("%T\n", _tmpPreConv)
-					fmt.Printf("%+v\n", _tmpPreConv)
+					// fmt.Printf("%+v\n", _tmpPreConv)
+					curConv[k].CurrencyInfo.Preconversions = _tmpPreConv
 				}
 				if val, ok := vv.(map[string]interface{})["eras"]; ok {
-					fmt.Println("eras ---", val)
+					// fmt.Println("eras ---", val)
+					curConv[k].CurrencyInfo.Eras = val.([]interface{})
 				}
 			}
+		}
+		// break
+	}
+
+	for i, v := range curConv {
+		fmt.Println(i)
+		fmt.Printf("CurrencyInfo --- %+v\n", v.CurrencyInfo)
+		fmt.Printf("Lastnotarization --- %+v\n", v.Lastnotarization)
+		if v.Multifractional.Name != "" {
+			fmt.Printf("\nMultifractional --- %+v\n\n", v.Multifractional)
 		}
 		// break
 	}

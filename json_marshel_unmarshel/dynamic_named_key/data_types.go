@@ -40,7 +40,7 @@ type CurrencyInfo struct {
 
 // GetCurrencyConverter type
 type GetCurrencyConverter struct {
-	CurrencyInfo     map[string]CurrencyInfo `json:"-"`
+	CurrencyInfo     CurrencyInfo `json:"-"`
 	Lastnotarization struct {
 		Version             int    `json:"version"`
 		Currencyid          string `json:"currencyid"`
