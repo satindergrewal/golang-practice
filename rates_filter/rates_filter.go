@@ -6,6 +6,8 @@ import (
 	"strings"
 )
 
+var MARKETS_AVAILABLE = map[string][]string{}
+
 var fixer_data = `{
 	"success":true,
 	"timestamp":1635570135,
@@ -222,7 +224,43 @@ func main() {
 	fx.Rates = rates
 	fmt.Println(fx)
 
-	b, _ := json.MarshalIndent(fx, "", "  ")
-	fmt.Println(string(b))
+	// b, _ := json.MarshalIndent(fx, "", "  ")
+	// fmt.Println(string(b))
 
+	// MARKETS_AVAILABLE["binance"] = append(MARKETS_AVAILABLE["binance"], "BTC-USD")
+
+	if _, ok := MARKETS_AVAILABLE["binance"]; ok {
+		fmt.Println("element found")
+	} else {
+		fmt.Println("element not found")
+	}
+
+	// for _, v := range MARKETS_AVAILABLE["binance"] {
+	// 	// fmt.Println(i)
+	// 	// fmt.Println(v)
+	// 	if v != "BTC-USDT" {
+	// 		MARKETS_AVAILABLE["binance"] = append(MARKETS_AVAILABLE["binance"], "BTC-USDT")
+	// 	}
+	// }
+
+	// if _, ok := set[1]; ok {
+	// 	fmt.Println("element found")
+	// } else {
+	// 	fmt.Println("element not found")
+	// }
+
+	// markets, _ := json.Marshal(MARKETS_AVAILABLE)
+	// fmt.Println(string(markets))
+
+	var x map[string]interface{}
+	xType := fmt.Sprintf("%T", x)
+	if xType != "[]interface {}" {
+		fmt.Println("not type []interface{}")
+		fmt.Println("xType value:", xType)
+		fmt.Printf("xTyle type: %T\n", xType)
+	} else {
+		fmt.Println("type is []interface{}")
+		fmt.Println("xType value:", xType)
+		fmt.Printf("xTyle type: %T\n", xType)
+	}
 }
