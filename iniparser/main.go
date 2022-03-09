@@ -32,4 +32,9 @@ func main() {
 	// Now, make some changes and save it
 	cfg.Section("").Key("app_mode").SetValue("production")
 	cfg.SaveTo("my.ini.local")
+
+	secs := cfg.Sections()
+	names := cfg.SectionStrings()
+	fmt.Println("secs", secs)
+	fmt.Println("names", names)
 }
