@@ -1,0 +1,1 @@
+curl -s https://api.github.com/repos/veruscoin/veruscoin/releases/latest | jq .assets | jq '.[0]'
