@@ -15,20 +15,26 @@ import (
 	// "net/http"
 )
 
+type UpgradeDaemonInfo struct {
+	Version string `json:"version,omitempty"`
+	URL     string `json:"url,omitempty"`
+	Err     error  `json:"error,omitempty"`
+}
+
 func main() {
 	fmt.Println(runtime.GOOS)
 	fmt.Println(runtime.GOARCH)
 	// gi, _ := goInfo.GetInfo()
-	out, err := GetDlURL("linux", runtime.GOARCH)
-	if err != nil {
-		fmt.Println(err)
+	out := GetDlURL("linux", runtime.GOARCH)
+	if out.Err != nil {
+		fmt.Println(out.Err)
 	}
-	fmt.Println("out:", out)
+	fmt.Printf("out: %q\n", out)
 }
 
-func GetDlURL(str ...string) (string, error) {
+func GetDlURL(str ...string) UpgradeDaemonInfo {
 	var dlLinuxArm64, dlLinuxAmd64, dlmacOS, dlWin64 string
-	fmt.Println(str)
+	// fmt.Println(str)
 
 	client := &fasthttp.Client{}
 	url := `https://api.github.com/repos/veruscoin/veruscoin/releases/latest`
@@ -52,7 +58,7 @@ func GetDlURL(str ...string) (string, error) {
 
 	bodyBytes := resp.Body()
 	if len(bodyBytes) != 0 {
-		fmt.Println("bodyBytes len:", len(bodyBytes))
+		// fmt.Println("bodyBytes len:", len(bodyBytes))
 		// fmt.Println("bodyBytes:", string(bodyBytes))
 
 		var res interface{}
@@ -60,7 +66,7 @@ func GetDlURL(str ...string) (string, error) {
 
 		assets := res.(map[string]interface{})["assets"].([]interface{})
 		tag_name := res.(map[string]interface{})["tag_name"].(string)
-		fmt.Println("tag_name:", tag_name)
+		// fmt.Println("tag_name:", tag_name)
 
 		// fmt.Println(`assets -- `, len(assets))
 		for i, _ := range assets {
@@ -91,45 +97,45 @@ func GetDlURL(str ...string) (string, error) {
 				dlWin64 = assets[i].(map[string]interface{})["browser_download_url"].(string)
 			}
 		}
-		fmt.Println("dlLinuxArm64:", dlLinuxArm64)
-		fmt.Println("dlLinuxAmd64:", dlLinuxAmd64)
-		fmt.Println("dlmacOS:", dlmacOS)
-		fmt.Println("dlWin64:", dlWin64)
+		// fmt.Println("dlLinuxArm64:", dlLinuxArm64)
+		// fmt.Println("dlLinuxAmd64:", dlLinuxAmd64)
+		// fmt.Println("dlmacOS:", dlmacOS)
+		// fmt.Println("dlWin64:", dlWin64)
 		if len(str) != 0 {
 			switch str[0] {
 			case "darwin":
-				return dlmacOS, nil
+				return UpgradeDaemonInfo{Version: tag_name, URL: dlmacOS, Err: nil}
 			case "linux":
 				switch str[1] {
 				case "x86_64":
-					return dlLinuxAmd64, nil
+					return UpgradeDaemonInfo{Version: tag_name, URL: dlLinuxAmd64, Err: nil}
 				case "amd64":
-					return dlLinuxAmd64, nil
+					return UpgradeDaemonInfo{Version: tag_name, URL: dlLinuxAmd64, Err: nil}
 				case "arm64":
-					return dlLinuxArm64, nil
+					return UpgradeDaemonInfo{Version: tag_name, URL: dlLinuxArm64, Err: nil}
 				}
 			case "windows":
-				return dlWin64, nil
+				return UpgradeDaemonInfo{Version: tag_name, URL: dlWin64, Err: nil}
 			}
 		} else {
 			switch runtime.GOOS {
 			case "darwin":
-				return dlmacOS, nil
+				return UpgradeDaemonInfo{Version: tag_name, URL: dlmacOS, Err: nil}
 			case "linux":
 				switch runtime.GOARCH {
 				case "x86_64":
-					return dlLinuxAmd64, nil
+					return UpgradeDaemonInfo{Version: tag_name, URL: dlLinuxAmd64, Err: nil}
 				case "amd64":
-					return dlLinuxAmd64, nil
+					return UpgradeDaemonInfo{Version: tag_name, URL: dlLinuxAmd64, Err: nil}
 				case "arm64":
-					return dlLinuxArm64, nil
+					return UpgradeDaemonInfo{Version: tag_name, URL: dlLinuxArm64, Err: nil}
 				}
 			case "windows":
-				return dlWin64, nil
+				return UpgradeDaemonInfo{Version: tag_name, URL: dlWin64, Err: nil}
 			}
 		}
 	} else {
-		return "", errors.New("downloads are unreachable")
+		return UpgradeDaemonInfo{Err: errors.New("downloads are unreachable")}
 	}
-	return "", errors.New("something went wrong processing this request")
+	return UpgradeDaemonInfo{Err: errors.New("something went wrong processing this request")}
 }
