@@ -13,5 +13,5 @@ func main() {
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Hello, TLS user! Your config: %+v", r.TLS)
 	})
-	log.Fatal(http.Serve(autocert.NewListener("example.com"), mux))
+	log.Fatal(http.Serve(autocert.NewListener("dev.khoji.io"), mux))
 }
