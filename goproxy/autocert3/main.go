@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	origin, _ := url.Parse("http://localhost:8080/")
+	origin, _ := url.Parse("http://127.0.0.1:3334/")
 
 	director := func(req *http.Request) {
 		req.Header.Add("X-Forwarded-Host", req.Host)
@@ -26,7 +26,7 @@ func main() {
 		proxy.ServeHTTP(w, r)
 	})
 	// mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-	// 	w.Write([]byte("Hello world"))
+	//      w.Write([]byte("Hello world"))
 	// })
 
 	certManager := autocert.Manager{
